@@ -9,7 +9,6 @@ export default {
         return state.listOfUsers
     },
     getUserById(state) {
-        console.log(state.listOfUsers);
         return (id) => {
             return state.listOfUsers.find((e) => e.id = id)
         }

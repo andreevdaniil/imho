@@ -1,6 +1,6 @@
 const state = {
     listOfUsers: [],
-    currentUser: {}
+    currentUser: null
 }
 
 export default state

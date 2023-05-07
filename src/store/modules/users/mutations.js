@@ -3,6 +3,7 @@ export default {
         state.listOfUsers = data
     },
     changeCurrentUser(state, user){
+        console.log('пицца');
         state.currentUser = user
     },
     changeUserByLocalStorage(state) {

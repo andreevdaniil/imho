@@ -56,10 +56,11 @@ export default {
       currentPassword: "",
     };
   },
-  mounted() {
+  created() {
     if (this.user) {
       this.$router.push({ name: "AdminPage" });
     }
+    console.log(this.user);
   },
   components: {
     StarIcon,
