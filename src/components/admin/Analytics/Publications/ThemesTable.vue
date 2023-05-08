@@ -1,5 +1,5 @@
 <template>
-  <div class="analytics-themes-table">
+  <div class="analytics-themes-table main-content">
     <div class="analytics-themes-table__top main-table_white">
       <div class="analytics-themes-table__row">
         <div class="analytics-themes-table__parameter main-table__column">

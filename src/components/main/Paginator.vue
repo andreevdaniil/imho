@@ -1,6 +1,6 @@
 <template>
   <div class="main-paginator">
-    <div class="main-paginator__content">
+    <div class="main-paginator__content main-table__column">
       <div class="main-paginator__column">
         <ul class="main-paginator__count">
           <li
@@ -171,6 +171,12 @@ export default {
     items(newValue) {
       this.sendData(newValue);
     },
+    pages(newValue){
+      if (newValue == 1) {
+        this.currentPage = 1
+        this.sendData();
+      }
+    }
   },
 };
 </script>
@@ -187,7 +193,6 @@ export default {
     background: #fff;
     padding: 8px;
     justify-content: space-between;
-    border: 1px solid #c0c0c0;
     border-radius: 0px 0px 8px 8px;
   }
   &__count {

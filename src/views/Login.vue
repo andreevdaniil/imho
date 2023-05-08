@@ -56,12 +56,6 @@ export default {
       currentPassword: "",
     };
   },
-  created() {
-    if (this.user) {
-      this.$router.push({ name: "AdminPage" });
-    }
-    console.log(this.user);
-  },
   components: {
     StarIcon,
     ErrorIcon,
@@ -73,18 +67,22 @@ export default {
   },
   methods: {
     ...mapActions("Users", ["auth"]),
-    submitLoginForm() {
+    submitLoginForm(e) {
+      e.preventDefault();
+
       let data = {
         login: this.currentLogin,
         password: this.currentPassword,
       };
       this.auth(data).then(
         () => {
+          this.$route.push({ name: "AdminEmployeesTable" });
           this.clearErrors();
         },
         (error) => {
           this.errors.loginIsError = error.loginIsError;
           this.errors.passwordIsError = error.passwordIsError;
+          console.log(error);
         }
       );
     },

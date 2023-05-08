@@ -1,5 +1,5 @@
 <template>
-  <div class="analytics-geography-table">
+  <div class="analytics-geography-table main-content">
     <div class="analytics-geography-table__top main-table_white">
       <div class="analytics-geography-table__row">
         <div

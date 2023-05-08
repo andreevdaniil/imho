@@ -1,5 +1,5 @@
 <template>
-  <Profile :currentUser="currentUser"/>
+  <Profile :currentUser="currentUser" v-if="currentUser" />
 </template>
 <script>
 import Profile from "@/components/admin/Employees/Profile";

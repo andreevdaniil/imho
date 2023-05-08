@@ -1,18 +1,7 @@
 <template>
   <div class="admin-page">
     <div class="admin-page__content">
-      <div class="admin-page__top">
-        <h2 class="admin-page__title">Личный кабинет Администратора</h2>
-        <div class="main-filter admin-page__filter">
-          <button class="main-filter__button main-filter__button_active">
-            Сотрудники
-          </button>
-          <router-link class="main-filter__button" :to="{name: 'AdminEmployeesCreateEmployeer'}">
-            Зарегестрировать нового сотрудника
-          </router-link>
-        </div>
-      </div>
-      <EmployeesTable :users="paginatedUsers" />
+      <ExecutivesTable :users="paginatedUsers" />
       <MainPaginator
         @changePaginatedItems="changeData"
         :items="filteredUsers"
@@ -21,7 +10,7 @@
   </div>
 </template>
 <script>
-import EmployeesTable from "@/components/admin/Employees/EmployeesTable.vue";
+import ExecutivesTable from "@/components/admin/Employees/EmployeesTable.vue";
 import MainPaginator from "@/components/main/Paginator.vue";
 import { mapGetters } from "vuex";
 export default {
@@ -31,7 +20,7 @@ export default {
     };
   },
   components: {
-    EmployeesTable,
+    ExecutivesTable,
     MainPaginator,
   },
   computed: {

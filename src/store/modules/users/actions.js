@@ -7,7 +7,7 @@ export default {
                 loginIsError: false,
                 passwordIsError: false
             }
-            const user = state.listOfUsers.find(user => user.login == data.login);
+            const user = state.listOfUsers.find(user => user.login == data.login) || state.listOfUsers.find(user => user.email == data.login);
             if (user == undefined) {
                 errors.loginIsError = true
                 reject(errors)
@@ -30,13 +30,25 @@ export default {
 
             })
     },
-    CREATE_USER({state}, user) {
-        console.log(state.listOfUsers[state.listOfUsers.length - 1].id );
-        axios.post('http://localhost:3000/users', user).then(resp => {
-            console.log(resp.data);
+    CREATE_USER({ state }, user) {
+        axios.post('http://localhost:3000/users', user).then(() => {
+            console.log(state.listOfUsers);
             alert('Успешно')
         }).catch(error => {
             console.log(error);
         });
+    },
+    CHANGE_USER({ s }, user) {
+        console.log(s);
+        console.log(user);
+        fetch(`http://localhost:3000/users`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            .then(res => console.log(res))
+            .then(json => console.log(json))
     }
 }

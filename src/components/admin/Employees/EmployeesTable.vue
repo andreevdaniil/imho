@@ -28,7 +28,7 @@
           class="admin-table-employees__row"
           v-for="user in users"
           :key="user.id"
-          :to="{name: 'AdminEmployeesView', params: {id: user.id}}"
+          :to="{ name: 'AdminEmployeesView', params: { id: user.id } }"
         >
           <div class="admin-table-employees__value main-table__column">
             <p class="admin-table-employees__text">{{ user.id }}</p>
@@ -87,7 +87,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 export default {
   props: {
     users: {
@@ -95,14 +94,6 @@ export default {
       default: () => {
         return [];
       },
-    },
-  },
-  computed: {
-    ...mapGetters({
-      currentUser: "Users/getCurrentUser",
-    }),
-    pages() {
-      return Math.cell(this.users.length / 10);
     },
   },
 };
@@ -131,11 +122,18 @@ export default {
     font-weight: 500;
     line-height: 21px;
     color: #353132;
+    padding: 2px 8px;
+    font-weight: 700;
+    border-radius: 8px;
+
     &_blue {
-      font-weight: 700;
-      padding: 2px 8px;
       background: #c0fbff;
-      border-radius: 8px;
+    }
+    &_green {
+      background: #d0ffd2;
+    }
+    &_red {
+      background: #ffdddd;
     }
     &_bold {
       font-weight: 700;

@@ -1,6 +1,6 @@
 <template>
-  <div class="analytics-publications-table">
-    <div class="analytics-publications-table__top main-table_white">
+  <div class="analytics-publications-table main-content">
+    <div class="analytics-publications-table__top main-table_white ">
       <div class="analytics-publications-table__row">
         <div
           class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"

@@ -18,6 +18,9 @@ export default {
     ]),
   },
   mounted() {
+    if (localStorage.user) {
+      this.$store.commit("Users/changeUserByLocalStorage");
+    }
     if (this.CurrentUser == null && this.$route.name != "Login") {
       this.$router.push({ name: "Login" });
     }
@@ -26,9 +29,6 @@ export default {
     this.GET_USERS_FROM_API();
     this.GET_AUTHORS_FROM_API();
 
-    if (localStorage.user) {
-      this.$store.commit("Users/changeUserByLocalStorage");
-    }
     // }
   },
   computed: {

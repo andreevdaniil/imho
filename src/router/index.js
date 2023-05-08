@@ -13,8 +13,8 @@ const routes = [{
         }
     },
     {
-        path: '/admin',
-        name: 'AdminPage',
+        path: '/admin/employees',
+        name: 'AdminEmployees',
         component: () =>
             import ('../views/AdminPages/EmployeesPages/Main.vue'),
         meta: {
@@ -53,6 +53,15 @@ const routes = [{
         name: 'AdminAnalyticsUsersPage',
         component: () =>
             import ('../views/AdminPages/AnalyticsPages/Users'),
+        meta: {
+            layout: 'Default'
+        }
+    },
+    {
+        path: '/admin/employees/list',
+        name: 'AdminEmployeesTable',
+        component: () =>
+            import ('../views/AdminPages/EmployeesPages/Main'),
         meta: {
             layout: 'Default'
         }

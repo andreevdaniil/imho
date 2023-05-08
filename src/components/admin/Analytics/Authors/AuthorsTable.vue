@@ -3,7 +3,7 @@
     <div class="analytics-authors-table__top">
       <div class="analytics-authors-table__row">
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('id', parseInt))"
         >
           <p>Id</p>
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="
             filteredItems.sort(sort_by('availableCountries', (a) => a.length))
           "
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('name', (a) => a.toUpperCase()))"
         >
           <p>Автор</p>
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="
             filteredItems.sort(
               sort_by('lastActive', (a) => new Date(a).getTime())
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('publications', (a) => a.length))"
         >
           <p>Кол-во Публ.</p>
@@ -54,7 +54,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('reports', parseInt))"
         >
           <p>Жалобы</p>
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('humanComments', parseInt))"
         >
           <div class="analytics-authors-table__icon">
@@ -74,7 +74,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('comments', parseInt))"
         >
           <p>Р. Спикера</p>
@@ -83,7 +83,7 @@
           </div>
         </div>
         <div
-          class="analytics-authors-table__parameter analytics-authors-table__column"
+          class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('favourite', (a) => a.length))"
         >
           <div class="analytics-authors-table__icon">
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-    <div class="analytics-authors-table__body">
+    <div class="analytics-authors-table__body main-content">
       <div
         class="analytics-authors-table__row"
         v-for="item in paginatedItems"
@@ -236,7 +236,7 @@ export default {
     changeData(data) {
       this.paginatedItems = data;
     },
-    changeFilteredItems(array) {
+    changeFilteredItems(array = this.authors) {
       this.filteredItems = array.filter((item) => {
         return (
           item.availableCountries.some((element) =>
@@ -270,10 +270,6 @@ export default {
   &__top {
     background: #b90c0c;
     color: #fff;
-    border-radius: 8px 8px 0px 0px;
-    .analytics-authors-table__column {
-      border-color: #c0c0c0;
-    }
   }
   &__row {
     display: grid;
@@ -288,7 +284,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid transparent;
   }
   &__parameter {
     cursor: pointer;

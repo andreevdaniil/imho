@@ -1,6 +1,6 @@
 <template>
-  <div class="analytics-users-table main-table">
-    <div class="analytics-users-table__top main-table_white">
+  <div class="analytics-users-table main-table main-content">
+    <div class="analytics-users-table__top main-table_white ">
       <div class="analytics-users-table__row">
         <div class="analytics-users-table__parameter main-table__column">
           <p>№</p>

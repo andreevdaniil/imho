@@ -10,7 +10,7 @@ export default {
     },
     getUserById(state) {
         return (id) => {
-            return state.listOfUsers.find((e) => e.id = id)
+            return state.listOfUsers.find((e) => e.id == id)
         }
     }
 }

@@ -3,11 +3,20 @@
     <div class="employees-profile__content main-content">
       <div class="employees-profile__top employees-profile_after">
         <div class="employees-profile__title">
-          <h4>Просмотр профиля</h4>
+          <h4 v-if="$route.name == 'AdminEmployeesView'">Просмотр профиля</h4>
+          <h4 v-else>Регистрация нового сотрудника</h4>
         </div>
-        <div class="main-filter">
+        <div class="main-filter" v-if="$route.name == 'AdminEmployeesView'">
           <div class="main-filter__block">
-            <button class="main-filter__button">Профиль</button>
+            <button
+              class="main-filter__button"
+              :class="{
+                'main-filter__button_active':
+                  $route.name == 'AdminEmployeesView',
+              }"
+            >
+              Профиль
+            </button>
           </div>
           <div class="main-filter__block">
             <button class="main-filter__button">KPI</button>
@@ -18,7 +27,12 @@
         <div class="employees-profile__form">
           <div class="employees-profile__block">
             <div class="employees-profile__row">
-              <div class="employees-profile__field">
+              <div
+                class="employees-profile__field"
+                :class="{
+                  'employees-profile__field_error': errorsToSubmit.name,
+                }"
+              >
                 <label for="EmployeesProfileName">
                   <div class="employees-profile__icon">
                     <StarIcon />
@@ -32,9 +46,17 @@
                     v-model="changedUser.name"
                     placeholder="Введите имя"
                   />
+                  <div class="employees-profile__error">
+                    <ErrorIcon />
+                  </div>
                 </div>
               </div>
-              <div class="employees-profile__field">
+              <div
+                class="employees-profile__field"
+                :class="{
+                  'employees-profile__field_error': errorsToSubmit.surname,
+                }"
+              >
                 <label for="EmployeesProfileSurname">
                   <div class="employees-profile__icon">
                     <StarIcon />
@@ -48,12 +70,15 @@
                     v-model="changedUser.surname"
                     placeholder="Введите фамилию"
                   />
+                  <div class="employees-profile__error">
+                    <ErrorIcon />
+                  </div>
                 </div>
               </div>
               <div
                 class="employees-profile__field"
                 :class="{
-                  'employees-profile__field_error': !errorsToSubmit.email,
+                  'employees-profile__field_error': errorsToSubmit.email,
                 }"
               >
                 <label for="EmployeesProfileEmail">
@@ -267,7 +292,7 @@
               <div
                 class="employees-profile__field"
                 :class="{
-                  'employees-profile__field_error': !errorsToSubmit.password,
+                  'employees-profile__field_error': errorsToSubmit.password,
                 }"
               >
                 <label for="EmployeesProfilePassword">
@@ -288,7 +313,7 @@
               <div
                 class="employees-profile__field"
                 :class="{
-                  'employees-profile__field_error': !errorsToSubmit.password,
+                  'employees-profile__field_error': errorsToSubmit.password,
                 }"
               >
                 <label for="EmployeesProfileRepeatPassword">
@@ -312,11 +337,13 @@
       </div>
     </div>
     <div class="employees-profile__submit" v-if="currentUser == null">
-      <button @click="saveData">Зарегестрировать пользователя</button>
+      <button @click="saveData('newUser')">
+        Зарегестрировать пользователя
+      </button>
     </div>
     <div class="employees-profile__submit" v-else>
-      <button @click="saveData">Сохранить изменения</button>
-      <button>Удалить профиль</button>
+      <button @click="saveData('saveChange')">Сохранить изменения</button>
+      <button @click="saveData('deleteUser')">Удалить профиль</button>
     </div>
   </div>
 </template>
@@ -359,8 +386,13 @@ export default {
       },
       imageToShow: null,
       errorsToSubmit: {
-        password: true,
-        email: true,
+        name: false,
+        surname: false,
+        email: false,
+        password: false,
+        roles: false,
+        photo: false,
+        availableCountries: false,
       },
       repeatPassword: null,
     };
@@ -369,35 +401,51 @@ export default {
     StarIcon,
     ErrorIcon,
   },
-  beforeMount() {
-    if (this.currentUser) {
+  mounted() {
+    if (this.$route.name == "AdminEmployeesView" && this.currentUser) {
       this.changedUser = JSON.parse(JSON.stringify(this.currentUser));
+      this.repeatPassword = this.currentUser.password;
     }
-    this.repeatPassword = this.changedUser.password || null;
   },
   methods: {
-    saveData() {
+    saveData(action) {
       this.hasError();
       for (let err in this.errorsToSubmit) {
-        if (this.errorsToSubmit[err] == false) {
-          console.error("Ошибка");
+        if (this.errorsToSubmit[err] == true) {
+          console.error(`${err}: false`);
           return;
         }
       }
-      if (!this.currentUser) {
-        this.$emit("createNewEmployeer", this.changedUser);
-        this.$route.push({path: '/admin'})
-        return 
+      if (action == "newUser") {
+        this.CREATE_USER(this.changedUser);
+        // this.$router.push({ path: "/admin/Employees/list" });
+      } else if (action == "saveChange") {
+        this.CHANGE_USER(this.changedUser);
       }
+      this.$router.push({name: 'AdminEmployeesTable'})
     },
     hasError() {
       let reEmail =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       let rePassword = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$/;
-      this.errorsToSubmit.email = reEmail.test(this.changedUser.email);
-      this.errorsToSubmit.password =
-        rePassword.test(this.changedUser.password) &&
-        this.repeatPassword == this.changedUser.password;
+      this.errorsToSubmit.name = this.changedUser.name ? false : true; // Валидация имени
+      this.errorsToSubmit.surname = this.changedUser.surname ? false : true; //Валидация фамилии
+      this.errorsToSubmit.email = !reEmail.test(this.changedUser.email); //Валидация почты
+      this.errorsToSubmit.roles =
+        this.changedUser.roles.length == 0 ? true : false; //Валидация ролей
+      this.errorsToSubmit.photo = this.changedUser.photo
+        ? false
+        : this.currentUser == null
+        ? true
+        : false; //Валидация аватарки
+      this.errorsToSubmit.availableCountries =
+        this.changedUser.availableCountries.length == 0 ? true : false; //Валидация доступа к странам
+      this.errorsToSubmit.password = !(
+        (
+          rePassword.test(this.changedUser.password) &&
+          this.repeatPassword == this.changedUser.password
+        ) //Валидация пароля
+      );
     },
     changeCountry(country) {
       if (country == "Все") {
@@ -417,12 +465,15 @@ export default {
     uploadImage(e) {
       const image = e.target.files[0];
       const reader = new FileReader();
-
+      let changeSrc = (src) => {
+        this.changedUser.photo = src;
+        this.imageToShow = src;
+      };
       if (image && image.size > 1024 * 1024) {
         console.error("Изображение слишком большое");
 
         e.preventDefault();
-        return false;
+        return;
       } else if (image) {
         reader.readAsDataURL(image);
         reader.onload = (e) => {
@@ -433,19 +484,19 @@ export default {
             if (this.width < 200 || this.height < 200) {
               console.error("Изображение слишком маленькое");
               e.preventDefault();
-              return false;
+              src = "";
+              return;
             }
+            changeSrc(src);
           };
-          this.changedUser.image = src;
-          this.imageToShow = src;
         };
       }
     },
-    ...mapActions("Users", ["CREATE_USER"]),
+    ...mapActions("Users", ["CREATE_USER", "CHANGE_USER"]),
   },
   watch: {
-    changedUser(newValue) {
-      this.changedUser = newValue;
+    currentUser(newValue) {
+      this.currentUser = newValue;
     },
   },
 };
@@ -457,6 +508,10 @@ export default {
   input {
     color: #353132;
     font-weight: 700;
+  }
+  &__content {
+    padding: 16px;
+    border-radius: 16px;
   }
   &__top {
     display: flex;
@@ -645,6 +700,7 @@ export default {
   }
   &_after {
     position: relative;
+    padding-bottom: 5px;
     h4 {
       font-size: 24px;
       line-height: 36px;
