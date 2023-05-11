@@ -213,7 +213,7 @@ import { mapGetters } from "vuex";
 import Paginator from "@/components/main/Paginator";
 import FilterArrowsIcon from "@/assets/images/icons/filterArrows.svg?inline";
 import ViewsIcon from "@/assets/images/icons/views.svg?inline";
-import UsersIcon from "@/assets/images/icons/users.svg?inline";
+import UsersIcon from "@/assets/images/icons/whiteUsers.svg?inline";
 import FireIcon from "@/assets/images/icons/fire.svg?inline";
 import CommentsIcon from "@/assets/images/icons/comment.svg?inline";
 import HeartIcon from "@/assets/images/icons/heart.svg?inline";
