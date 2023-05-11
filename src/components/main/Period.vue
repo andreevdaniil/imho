@@ -36,21 +36,35 @@
   </v-date-picker>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       range: {
-        start: new Date(2023, 4, 2),
-        end: new Date(2023, 4, 12),
+        start: '',
+        end: ''
       },
       masks: {
         input: "DD.MM.YYYY",
       },
       attr: {
-        highlight: "red"
+        highlight: "red",
       },
     };
   },
+  computed: {
+    ...mapGetters({
+      getRange: "Main/getRange"
+    })
+  },
+  watch: {
+    getRange(newValue) {
+      this.range = newValue
+    },
+    range(newValue) {
+      this.$store.commit("Main/changeRangeForPeriod", newValue)
+    }
+  }
 };
 </script>
 <style lang="scss">

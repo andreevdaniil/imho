@@ -1,7 +1,6 @@
 <template>
   <div class="analytics-authors">
     <div class="analytics-authors__content">
-      <MainHeader />
       <div class="analytics-authors__body">
         <component
           :authors="Authors"
@@ -12,13 +11,11 @@
   </div>
 </template>
 <script>
-import MainHeader from "@/components/admin/Analytics/MainHeader";
 import AuthorsTable from "@/components/admin/Analytics/Authors/AuthorsTable";
 import GeographyTable from "@/components/admin/Analytics/Authors/GeographyTable";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    MainHeader,
     AuthorsTable,
     GeographyTable,
   },
@@ -28,7 +25,7 @@ export default {
       return query.charAt(0).toUpperCase() + query.slice(1);
     },
     ...mapGetters({
-      Authors: "AdminFilters/getAuthors",
+      Authors: "Main/getAuthors",
     }),
   },
 };

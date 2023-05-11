@@ -13,76 +13,92 @@ const routes = [{
         }
     },
     {
-        path: '/admin/employees',
-        name: 'AdminEmployees',
+        path: '/admin',
+        name: 'MainAdmin',
         component: () =>
-            import ('../views/AdminPages/EmployeesPages/Main.vue'),
-        meta: {
-            layout: 'Default'
-        }
+            import ('../layouts/AdminLayout.vue'),
+        children: [{
+                path: 'employees',
+                name: 'AdminEmployees',
+                component: () =>
+                    import ('../views/AdminPages/EmployeesPages/Main'),
+                children: [{
+                        path: 'list',
+                        name: 'AdminEmployeesTable',
+                        component: () =>
+                            import ('../views/AdminPages/EmployeesPages/List'),
+                    },
+                    {
+                        path: 'view/:id',
+                        name: 'AdminEmployeesView',
+                        component: () =>
+                            import ('@/views/AdminPages/EmployeesPages/View'),
+                    },
+                    {
+                        path: 'create',
+                        name: 'AdminEmployeesCreateEmployeer',
+                        component: () =>
+                            import ('../views/AdminPages/EmployeesPages/CreateNew'),
+                    },
+                ]
+
+            },
+            {
+                path: 'analytics',
+                name: 'AdminAnalyticsMain',
+                component: () =>
+                    import ('../views/AdminPages/AnalyticsPages/Main'),
+                children: [{
+                        path: 'graph',
+                        name: 'AdminAnalyticsPage',
+                        component: () =>
+                            import ('../views/AdminPages/AnalyticsPages/Graph'),
+                    },
+                    {
+                        path: 'authors',
+                        name: 'AdminAnalyticsAuthorsPage',
+                        component: () =>
+                            import ('../views/AdminPages/AnalyticsPages/Authors'),
+                    },
+                    {
+                        path: 'publications',
+                        name: 'AdminAnalyticsPublicationsPage',
+                        component: () =>
+                            import ('../views/AdminPages/AnalyticsPages/Publications'),
+                    },
+                    {
+                        path: 'users',
+                        name: 'AdminAnalyticsUsersPage',
+                        component: () =>
+                            import ('../views/AdminPages/AnalyticsPages/Users'),
+                    },
+                ]
+            }
+        ]
     },
     {
-        path: '/admin/analytics',
-        name: 'AdminAnalyticsPage',
+        path: '/moderator/',
+        name: 'MainModer',
         component: () =>
-            import ('../views/AdminPages/AnalyticsPages/Main'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/analytics/authors',
-        name: 'AdminAnalyticsAuthorsPage',
-        component: () =>
-            import ('../views/AdminPages/AnalyticsPages/Authors'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/analytics/publications',
-        name: 'AdminAnalyticsPublicationsPage',
-        component: () =>
-            import ('../views/AdminPages/AnalyticsPages/Publications'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/analytics/users',
-        name: 'AdminAnalyticsUsersPage',
-        component: () =>
-            import ('../views/AdminPages/AnalyticsPages/Users'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/employees/list',
-        name: 'AdminEmployeesTable',
-        component: () =>
-            import ('../views/AdminPages/EmployeesPages/Main'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/employees/view/:id',
-        name: 'AdminEmployeesView',
-        component: () =>
-            import ('../views/AdminPages/EmployeesPages/View'),
-        meta: {
-            layout: 'Default'
-        }
-    },
-    {
-        path: '/admin/employees/create',
-        name: 'AdminEmployeesCreateEmployeer',
-        component: () =>
-            import ('../views/AdminPages/EmployeesPages/CreateNew'),
-        meta: {
-            layout: 'Default'
-        }
+            import ('../layouts/ModerLayout'),
+        children: [{
+            path: 'publications',
+            name: 'ModerPublications',
+            component: () =>
+                import ('../views/ModerPages/PublicationsPages/Main'),
+                children: [
+                    {
+                        path: 'new',
+                        name: 'ModerPublicationsNew',
+                        component: () => import ('../views/ModerPages/PublicationsPages/New')
+                    },
+                    {
+                        path: 'approved',
+                        name: 'ModerPublicationsApproved',
+                        component: () => import ('../views/ModerPages/PublicationsPages/Approved')
+                    },
+                ]
+        }]
     }
 
 ]
@@ -91,6 +107,23 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
+})
+router.beforeEach((to, from, next) => {
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+        currentRouteName = to.name ? to.name.toLowerCase() : ''
+    if (user != null || to.name == 'Login') {
+        next()
+
+    } else if (user == null) {
+        next({ name: 'Login' })
+    }
+    if (user != null && currentRouteName.includes('admin') && !user.roles.includes('администратор')) {
+        next({ name: 'MainModer' })
+        return
+    } else if (user != null && currentRouteName.includes('moder') && !user.roles.includes('модератор')) {
+        next({ name: 'AdminEmployeesTable' })
+        return false
+    }
 })
 
 export default router

@@ -75,8 +75,9 @@ export default {
         password: this.currentPassword,
       };
       this.auth(data).then(
-        () => {
-          this.$route.push({ name: "AdminEmployeesTable" });
+        (resolve) => {
+          console.log(resolve);
+          this.$router.push({ name: "AdminEmployeesTable" });
           this.clearErrors();
         },
         (error) => {

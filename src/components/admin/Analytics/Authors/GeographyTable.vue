@@ -328,7 +328,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      availableCountries: "AdminFilters/getAvailableCountries",
+      availableCountries: "Main/getAvailableCountries",
     }),
   },
   watch: {

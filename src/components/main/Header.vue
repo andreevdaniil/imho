@@ -3,35 +3,61 @@
     <div class="header-top">
       <div class="container">
         <div class="header-top__content">
-          <div class="header-top__user">
-            <img
-              :src="require('@/assets/images/users/avatar1.png')"
-              alt="user"
-              class="header-top__image"
-            />
-            <p class="header-top__name">{{ user.surname }} {{ user.name }}</p>
-          </div>
-          <div class="header-top__filter">
-            <ul class="header-top__list">
-              <li
-                class="header-top__country"
-                :class="{
-                  'header-top__country_active':
-                    availableCountries.includes(item),
-                }"
-                @click="chooseCountrie(item)"
-                v-for="item in countries"
-                :key="item"
+          <div class="header-top__block">
+            <div class="header-top__user">
+              <img
+                :src="require('@/assets/images/users/avatar1.png')"
+                alt="user"
+                class="header-top__image"
+              />
+              <p class="header-top__name">{{ user.surname }} {{ user.name }}</p>
+            </div>
+            <div class="header-top__filter">
+              <ul
+                class="header-top__list"
+                v-if="user.roles.includes('администратор')"
               >
-                {{ item }}
-              </li>
-            </ul>
-            <button
-              class="header-top__select button-red"
-              @click="chooseCountrie()"
-            >
-              Выбрать все
-            </button>
+                <li
+                  class="header-top__country"
+                  :class="{
+                    'header-top__country_active':
+                      availableCountries.includes(item),
+                  }"
+                  @click="chooseCountrie(item)"
+                  v-for="item in countries"
+                  :key="item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
+              <ul class="header-top__list" v-else>
+                <li
+                  class="header-top__country header-top__country_active"
+                  v-for="item in user.availableCountries"
+                  :key="item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
+              <button
+                class="header-top__select button-red"
+                @click="chooseCountrie()"
+                v-if="user.roles.includes('администратор')"
+              >
+                Выбрать все
+              </button>
+            </div>
+          </div>
+          <div
+            class="main-filter header-top__filter"
+            v-if="user.roles.includes('модератор')"
+          >
+            <div class="main-filter__block">
+              <button class="main-filter__button">KPI</button>
+            </div>
+            <div class="main-filter__block">
+              <button class="main-filter__button">Настройки</button>
+            </div>
           </div>
         </div>
       </div>
@@ -73,12 +99,12 @@ export default {
   computed: {
     ...mapGetters({
       user: "Users/getCurrentUser", // Текущий пользователь
-      availableCountries: "AdminFilters/getAvailableCountries", //Выбранные страны
+      availableCountries: "Main/getAvailableCountries", //Выбранные страны
     }),
   },
   methods: {
     chooseCountrie(item = this.countries) {
-      this.$store.commit("AdminFilters/changeAvailableCountries", item);
+      this.$store.commit("Main/changeAvailableCountries", item);
     },
   },
   components: {
@@ -97,9 +123,11 @@ export default {
     &__filter {
       display: flex;
       align-items: center;
+      padding: 0;
     }
     &__content {
       padding: 8px 0;
+      justify-content: space-between;
     }
     &__country {
       margin-right: 8px;
@@ -124,6 +152,10 @@ export default {
       font-size: 16px;
       font-weight: 700;
       color: #231f20;
+    }
+    &__block {
+      display: flex;
+      align-items: center;
     }
   }
   &-body {

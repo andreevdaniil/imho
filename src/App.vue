@@ -1,46 +1,38 @@
 <template>
   <div id="app">
-    <component v-if="Publications.length > 1" :is="layout"> </component>
-    <h1 v-else>Загрузка</h1>
+    <router-view></router-view>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-
+import { mapActions } from "vuex";
 export default {
+  mounted() {
+    this.GET_USERS_FROM_API();
+    if (localStorage.user) {
+      this.$store.commit("Users/changeUserByLocalStorage");
+    }
+    this.GET_PUBLICATIONS_FROM_API();
+    this.GET_AUTHORS_FROM_API();
+    this.GET_THEMES_FROM_API();
+  },
+  computed: {
+    layout() {
+      const layoutName = this.$route.meta.layout || "Empty";
+      console.log(this.$route.meta);
+      return () => import(`@/layouts/${layoutName}.vue`);
+    },
+    ...mapGetters({
+      CurrentUser: "Users/getCurrentUser",
+    }),
+  },
   methods: {
     ...mapActions("Users", ["GET_USERS_FROM_API"]),
-    ...mapActions("AdminFilters", [
+    ...mapActions("Main", [
       "GET_PUBLICATIONS_FROM_API",
       "GET_AUTHORS_FROM_API",
       "GET_THEMES_FROM_API",
     ]),
-  },
-  mounted() {
-    if (localStorage.user) {
-      this.$store.commit("Users/changeUserByLocalStorage");
-    }
-    if (this.CurrentUser == null && this.$route.name != "Login") {
-      this.$router.push({ name: "Login" });
-    }
-    this.GET_PUBLICATIONS_FROM_API();
-    this.GET_THEMES_FROM_API();
-    this.GET_USERS_FROM_API();
-    this.GET_AUTHORS_FROM_API();
-
-    // }
-  },
-  computed: {
-    ...mapGetters({
-      Authors: "Users/getListOfUsers",
-      Publications: "AdminFilters/getPublications",
-      CurrentUser: "Users/getCurrentUser",
-    }),
-    layout() {
-      const layoutName = this.$route.meta.layout || "Default";
-      return () => import(`@/layouts/${layoutName}.vue`);
-    },
   },
 };
 </script>

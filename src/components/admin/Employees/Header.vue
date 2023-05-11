@@ -1,3 +1,4 @@
+<!-- Это показвааем в layout -->
 <template>
   <div class="admin-page__top">
     <h2 class="admin-page__title">Личный кабинет Администратора</h2>
@@ -7,7 +8,8 @@
         class="main-filter__button"
         :class="{
           'main-filter__button_active':
-            $route.name == 'AdminEmployeesTable' || $route.name == 'AdminEmployeesView',
+            $route.name == 'AdminEmployeesTable' ||
+            $route.name == 'AdminEmployeesView',
         }"
       >
         Сотрудники
@@ -16,7 +18,7 @@
         class="main-filter__button"
         :class="{
           'main-filter__button_active':
-            $route.name == 'AdminEmployeesCreateEmployeer',
+            $route.name == 'AdminEmployeesCreateEmployeer'
         }"
         :to="{ name: 'AdminEmployeesCreateEmployeer' }"
       >

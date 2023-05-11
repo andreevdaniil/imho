@@ -2,13 +2,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Users from './modules/users/'
-import AdminFilters from './modules/AdminFilters';
+import Main from './modules/Main';
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
         Users,
-        AdminFilters
+        Main
     }
 })
 export default store

@@ -1,7 +1,6 @@
 <template>
   <div class="analytics-authors">
     <div class="analytics-authors__content">
-      <MainHeader />
       <div class="analytics-authors__body">
         <component
           :items="currentComponent == 'Themes' ? Themes : Publications"
@@ -12,14 +11,12 @@
   </div>
 </template>
   <script>
-import MainHeader from "@/components/admin/Analytics/MainHeader";
 import PublicationsTable from "@/components/admin/Analytics/Publications/PublicationsTable";
 import ThemesTable from "@/components/admin/Analytics/Publications/ThemesTable.vue";
 import { mapGetters } from "vuex";
 // import { mapActions } from "vuex";
 export default {
   components: {
-    MainHeader,
     PublicationsTable,
     ThemesTable,
   },
@@ -29,7 +26,7 @@ export default {
     }
   },
   methods: {
-    // ...mapActions("AdminFilters", ["GET_PUBLICATIONS_FROM_API", "GET_THEMES_FROM_API"]),
+    // ...mapActions("Main", ["GET_PUBLICATIONS_FROM_API", "GET_THEMES_FROM_API"]),
   },
   mounted() {
     // this.GET_PUBLICATIONS_FROM_API()
@@ -40,8 +37,8 @@ export default {
       return query.charAt(0).toUpperCase() + query.slice(1);
     },
     ...mapGetters({
-      Publications: "AdminFilters/getPublications",
-      Themes: "AdminFilters/getThemes",
+      Publications: "Main/getPublications",
+      Themes: "Main/getThemes",
     }),
   },
 };

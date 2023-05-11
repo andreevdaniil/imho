@@ -3,7 +3,7 @@
     <div class="analytics-publications-table__top main-table_white ">
       <div class="analytics-publications-table__row">
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('title', (a) => a.toUpperCase()))"
         >
           <p>Название</p>
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('id', parseInt))"
         >
           <p>Id</p>
@@ -21,7 +21,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('author', (a) => a.toUpperCase()))"
         >
           <p>Автор</p>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="
             filteredItems.sort(sort_by('availableCountries', (a) => a.length))
           "
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('views', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('users', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('fire', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -74,7 +74,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('comments', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -85,7 +85,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('likes', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('share', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -107,7 +107,7 @@
           </div>
         </div>
         <div
-          class="analytics-publications-table__column analytics-publications-table__parameter main-table__column"
+          class="analytics-publications-table__parameter main-table__column"
           @click="filteredItems.sort(sort_by('later', parseInt))"
         >
           <div class="analytics-publications-table__icon">
@@ -298,12 +298,12 @@ export default {
         return (a = key(a)), (b = key(b)), reverse * ((a > b) - (b > a));
       };
     },
-    // ...mapActions("AdminFilters", ["getUserById"]),
+    // ...mapActions("Main", ["getUserById"]),
   },
   computed: {
     ...mapGetters({
-      availableCountries: "AdminFilters/getAvailableCountries",
-      getUserById: "AdminFilters/getAuthorById",
+      availableCountries: "Main/getAvailableCountries",
+      getUserById: "Main/getAuthorById",
     }),
     getAuthors() {
       return this.authors;
