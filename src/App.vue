@@ -15,6 +15,7 @@ export default {
     this.GET_PUBLICATIONS_FROM_API();
     this.GET_AUTHORS_FROM_API();
     this.GET_THEMES_FROM_API();
+    this.GET_ARCHIVE_FROM_API()
   },
   computed: {
     layout() {
@@ -32,6 +33,7 @@ export default {
       "GET_PUBLICATIONS_FROM_API",
       "GET_AUTHORS_FROM_API",
       "GET_THEMES_FROM_API",
+      "GET_ARCHIVE_FROM_API",
     ]),
   },
 };

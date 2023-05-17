@@ -21,6 +21,9 @@ export default {
     SET_THEMES(state, data) {
         state.listOfThemes = data
     },
+    SET_ARCHIVE(state, data) {
+        state.listOfArchive = data
+    },
     changeRangeForPeriod(state, data) {
         state.rangeForPeriod = data
     },

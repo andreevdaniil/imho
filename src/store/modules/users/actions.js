@@ -31,16 +31,15 @@ export default {
             })
     },
     CREATE_USER({ state }, user) {
+        console.log(state);
         axios.post('http://localhost:3000/users', user).then(() => {
-            console.log(state.listOfUsers);
             alert('Успешно')
         }).catch(error => {
-            console.log(error);
+            console.error(error);
         });
     },
     CHANGE_USER({ s }, user) {
         console.log(s);
-        console.log(user);
         fetch(`http://localhost:3000/users`, {
                 method: 'PATCH',
                 headers: {

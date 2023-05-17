@@ -72,6 +72,11 @@ button {
     cursor: pointer;
 }
 
+.main-line {
+    border-bottom: 1px dashed #353132;
+    padding-bottom: 5px;
+}
+
 .button-red {
     padding: 5px 8px;
     font-size: 12px;
@@ -191,7 +196,7 @@ canvas {
 }
 
 .main-table__icon {
-    margin-right: 8px;
+    margin-right: 2px;
 }
 
 .main-table__text {
@@ -264,7 +269,7 @@ canvas {
 }
 
 .main-table-author__tag {
-    font-size: 12px !important;
+    font-size: 12px;
 }
 
 .main-table-author__list {
@@ -355,4 +360,58 @@ canvas {
     line-height: 1.4;
     font-size: 16px;
     font-weight: bold;
+}
+
+.main-switch {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 50px;
+    border-radius: 1em;
+    box-shadow: inset -2em 0px 0px 0px rgba(192, 192, 192, 1);
+    background-color: white;
+    border: 1px solid rgba(192, 192, 192, 1);
+    outline: none;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.main-switch:checked {
+    box-shadow: inset 2em 0px 0px 0px rgba(185, 12, 12, 1);
+}
+
+.main-switch:focus {
+    outline-width: 0;
+}
+
+.main-submit {
+    margin-top: 18px;
+    display: flex;
+}
+
+.main-submit button {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 700;
+    color: #b90c0c;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.main-submit button:not(:last-child) {
+    margin-right: 16px;
+}
+
+.main-submit button:hover {
+    border-color: #b90c0c;
+}
+
+.main-submit button:active {
+    background: #b90c0c;
+    color: #fff;
 }

@@ -3,11 +3,16 @@ export default {
         return state.availableCountries
     },
     getAuthors(state) {
-        console.log(state.listOfAuthors);
         return state.listOfAuthors
     },
     getPublications(state) {
         return state.listOfPublications
+    },
+    getArchive(state) {
+        return state.listOfArchive
+    },
+    getAllPublications(state) {
+        return state.listOfPublications.concat(state.listOfArchive)
     },
     getThemes(state) {
         return state.listOfThemes
@@ -17,10 +22,14 @@ export default {
             return state.listOfAuthors.find((x) => x.id == id)
         }
     },
+    getPublicationById(state) {
+        return (id) =>
+            state.listOfPublications.find((x) => x.id == id)
+    },
     getRange(state) {
         return state.rangeForPeriod
     },
     getTextForPeriod(state) {
         return state.textForPeriod
-    }
+    },
 }

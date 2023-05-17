@@ -80,25 +80,132 @@ const routes = [{
         path: '/moderator/',
         name: 'MainModer',
         component: () =>
-            import ('../layouts/ModerLayout'),
+            import ('../layouts/ModeratorLayout'),
         children: [{
-            path: 'publications',
-            name: 'ModerPublications',
-            component: () =>
-                import ('../views/ModerPages/PublicationsPages/Main'),
-                children: [
-                    {
+                path: 'article/:id',
+                name: 'ModeratorPublicationsArticle',
+                component: () =>
+                    import ('../views/ModeratorPages/PublicationsPages/View')
+            },
+            {
+                path: 'publications/table',
+                name: 'ModeratorPublicationsTable',
+                component: () =>
+                    import ('../views/ModeratorPages/PublicationsPages/Table/Main'),
+                children: [{
                         path: 'new',
-                        name: 'ModerPublicationsNew',
-                        component: () => import ('../views/ModerPages/PublicationsPages/New')
+                        name: 'ModeratorPublicationsTableNew',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/New')
                     },
                     {
                         path: 'approved',
-                        name: 'ModerPublicationsApproved',
-                        component: () => import ('../views/ModerPages/PublicationsPages/Approved')
+                        name: 'ModeratorPublicationsTableApproved',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/Approved')
+                    },
+                    {
+                        path: 'rejected',
+                        name: 'ModeratorPublicationsTableRejected',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/Rejected')
+                    },
+                    {
+                        path: 'archive',
+                        name: 'ModeratorPublicationsTableArchive',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/Archive')
+                    },
+                    {
+                        path: 'editorial',
+                        name: 'ModeratorPublicationsTableEditorial',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/Editorial')
+                    },
+                    {
+                        path: 'hot',
+                        name: 'ModeratorPublicationsTableHot',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/Hot')
+                    },
+                    {
+                        path: 'all',
+                        name: 'ModeratorPublicationsTableAll',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Table/All')
                     },
                 ]
-        }]
+            },
+            {
+                path: 'publications/calendar',
+                name: 'ModeratorPublicationsCalendar',
+                component: () =>
+                    import ('../views/ModeratorPages/PublicationsPages/Calendar/Main'),
+                children: [{
+                        path: 'new',
+                        name: 'ModeratorPublicationsCalendarNew',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/New')
+                    },
+                    {
+                        path: 'approved',
+                        name: 'ModeratorPublicationsCalendarApproved',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/Approved')
+                    },
+                    {
+                        path: 'rejected',
+                        name: 'ModeratorPublicationsCalendarRejected',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/Rejected')
+                    },
+                    {
+                        path: 'archive',
+                        name: 'ModeratorPublicationsCalendarArchive',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/Archive')
+                    },
+                    {
+                        path: 'editorial',
+                        name: 'ModeratorPublicationsCalendarEditorial',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/Editorial')
+                    },
+                    {
+                        path: 'hot',
+                        name: 'ModeratorPublicationsCalendarHot',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/Hot')
+                    },
+                    {
+                        path: 'all',
+                        name: 'ModeratorPublicationsCalendarAll',
+                        component: () =>
+                            import ('../views/ModeratorPages/PublicationsPages/Calendar/All')
+                    },
+                ]
+            },
+            {
+                path: 'user',
+                name: 'ModeratorUser',
+                component: () =>
+                    import ('../views/ModeratorPages/UserPages/Main'),
+                children: [{
+                        path: 'settings',
+                        name: 'ModeratorUserSettings',
+                        component: () =>
+                            import ('../views/ModeratorPages/UserPages/Settings')
+                    },
+                    {
+                        path: 'kpi',
+                        name: 'ModeratorUserKpi',
+                        component: () =>
+                            import ('../views/ModeratorPages/UserPages/Kpi')
+                    }
+                ]
+
+            }
+        ]
     }
 
 ]
@@ -118,7 +225,7 @@ router.beforeEach((to, from, next) => {
         next({ name: 'Login' })
     }
     if (user != null && currentRouteName.includes('admin') && !user.roles.includes('администратор')) {
-        next({ name: 'MainModer' })
+        next({ name: 'ModeratorPublicationsTableNew' })
         return
     } else if (user != null && currentRouteName.includes('moder') && !user.roles.includes('модератор')) {
         next({ name: 'AdminEmployeesTable' })

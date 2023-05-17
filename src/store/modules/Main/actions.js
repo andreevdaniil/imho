@@ -25,6 +25,14 @@ export default {
                 commit('SET_THEMES', response.data)
             })
     },
+    GET_ARCHIVE_FROM_API({ commit }) {
+        return axios('http://localhost:3000/archivePublications', {
+                method: 'GET'
+            })
+            .then(response => {
+                commit('SET_ARCHIVE', response.data)
+            })
+    },
     getUserById({ state }, data) {
         return state.listOfAuthors.find(x => x.id == data)
     }

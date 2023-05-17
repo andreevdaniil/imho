@@ -1,0 +1,796 @@
+<template>
+  <div class="publications-editor" v-if="currentArticle">
+    <div class="publications-editor__content">
+      <div class="publications-editor__block">
+        <div class="publications-editor__row main-line">
+          <h5 class="publications-editor__title">Информация о статье</h5>
+          <div class="publications-editor__icon"><ArchiveIcon /></div>
+        </div>
+        <div class="publications-editor__row">
+          <div class="publications-editor__info">
+            <p class="publications-editor__parameter">Статус</p>
+            <div
+              class="publications-editor__value publications-editor__value_status"
+              :style="{
+                background:
+                  currentArticle.status == 'approved' ? '#7B61FF' : '',
+              }"
+            >
+              <p>
+                {{ currentArticle.status == "approved" ? "Новый" : "" }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="publications-editor__row">
+          <div class="publications-editor__info">
+            <p class="publications-editor__parameter">Автор, соавторы</p>
+            <div
+              class="publications-editor__value publications-editor__value_author"
+            >
+              <div class="main-table-author">
+                <div class="main-table-author__image">
+                  <img src="@/assets/images/users/avatar2.png" alt="user" />
+                </div>
+                <div class="main-table-author__info">
+                  <p class="main-table-author__name">
+                    {{
+                      getAuthor(currentArticle.authorId)
+                        ? getAuthor(currentArticle.authorId).name
+                        : ""
+                    }}
+                    {{
+                      getAuthor(currentArticle.authorId)
+                        ? getAuthor(currentArticle.authorId).surname
+                        : ""
+                    }}
+                  </p>
+                  <p class="main-table-author__tag">
+                    {{
+                      getAuthor(currentArticle.authorId)
+                        ? getAuthor(currentArticle.authorId).tag
+                        : ""
+                    }}
+                  </p>
+                  <ul class="main-table-author__list">
+                    <li
+                      v-for="role in getAuthor(currentArticle.authorId)
+                        ? getAuthor(currentArticle.authorId).roles
+                        : []"
+                      :key="role"
+                      :style="[
+                        role == 'Лидер мнений'
+                          ? { background: '#CEE9FF' }
+                          : { background: '#E2E2E2' },
+                      ]"
+                    >
+                      <p>{{ role }}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="publications-editor__row">
+          <ul class="publications-editor__list">
+            <li>
+              <p class="publications-editor__parameter">Кол-во символов</p>
+              <p
+                class="publications-editor__value publications-editor__value_red"
+              >
+                6 117
+              </p>
+            </li>
+            <li>
+              <p class="publications-editor__parameter">Фотографии</p>
+              <p
+                class="publications-editor__value publications-editor__value_red"
+              >
+                6 117
+              </p>
+            </li>
+            <li>
+              <p class="publications-editor__parameter">Ссылки</p>
+              <p
+                class="publications-editor__value publications-editor__value_red"
+              >
+                6 117
+              </p>
+            </li>
+            <li>
+              <p class="publications-editor__parameter">Ошибки</p>
+              <p
+                class="publications-editor__value publications-editor__value_red"
+              >
+                6 117
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row publications-editor__row_center">
+        <button class="publications-editor__button">
+          <PenIcon />
+          Внести правки в статью самостоятельно
+        </button>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row publications-editor__row_margin">
+        <ul class="publications-editor__list">
+          <li
+            v-for="country in countries"
+            :key="country"
+            class="publications-editor__country"
+            :class="{
+              'publications-editor__country_active':
+                currentArticle.availableCountries.includes(country),
+            }"
+          >
+            <p>{{ country }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row main-line">
+        <h4 class="publications-editor__subtitme">Настройки</h4>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Дата публикации</p>
+          <div
+            class="publications-editor__value publications-editor__value_direction"
+          >
+            <SingleDate class="publications-editor__date">
+              <template v-slot:modalDate>
+                <div class="modal-date">
+                  <div class="modal-date__content">
+                    <div class="modal-date__top">
+                      <p class="modal-date__count">16 публикаций</p>
+                      <p class="modal-date__count">12</p>
+                    </div>
+                    <div class="modal-date__body">
+                      <ul class="modal-date__list">
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                        <li class="modal-date__item">
+                          Появится ли общая Европейская армия? Часть 2
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </SingleDate>
+            <p class="publications-editor__date">13:55</p>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Заголовок</p>
+          <div
+            class="publications-editor__value publications-editor__value_width"
+          >
+            <input
+              type="text"
+              class="publications-editor__input"
+              id="publicationTitle"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Тип</p>
+          <div
+            class="publications-editor__value publications-editor__value_width"
+          >
+            <select
+              name="TypeOfPublication"
+              class="publications-editor__select"
+            >
+              <option value="Blog" class="publications-editor__type">
+                Блог
+              </option>
+              <option value="Article" class="publications-editor__type">
+                Статья
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Рубрика</p>
+          <div
+            class="publications-editor__value publications-editor__value_width"
+          >
+            <input
+              type="text"
+              placeholder="Геополитика"
+              class="publications-editor__input"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <p class="publications-editor__parameter">Теги</p>
+        <div
+          class="publications-editor__value publications-editor__value_direction"
+        >
+          <input
+            type="text"
+            class="publications-editor__input publications-editor__input_square"
+            v-model="currentTag"
+          />
+          <button class="publications-editor__add" @click="addTag">
+            <PlusIcon />
+          </button>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__value">
+          <ul class="publications-editor__list">
+            <li class="publications-editor__tag" v-for="tag in tags" :key="tag">
+              <CloseIcon @click="deleteTag(tag)" />
+              <p>{{ tag }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row main-line">
+        <h4 class="publications-editor__subtitle">Страны</h4>
+      </div>
+      <div class="publications-editor__row">
+        <ul class="publications-editor__list main-table__list">
+          <li
+            class="main-filter__button"
+            v-for="country in countries"
+            :key="country"
+            @click="changeAvailableCountries(country)"
+          >
+            <div class="employees-profile__checkbox main-checkbox">
+              <input
+                type="checkbox"
+                :checked="currentArticle.availableCountries.includes(country)"
+                class="main-checkbox__input"
+              />
+              <div class="main-checkbox__checkmark"></div>
+              <div class="checkbox__body"></div>
+            </div>
+            <div class="main-table__icon">
+              <img
+                :src="
+                  require(`@/assets/images/icons/flags/${country.toLowerCase()}.svg`)
+                "
+                alt=""
+              />
+            </div>
+            <p class="main-table__text main-table__text_bold">
+              {{ country }}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Выбор редакции до</p>
+          <div
+            class="publications-editor__value publications-editor__value_direction"
+          >
+            <div class="employees-profile__checkbox main-checkbox">
+              <input type="checkbox" class="main-checkbox__input" />
+              <div class="main-checkbox__checkmark"></div>
+              <div class="checkbox__body"></div>
+            </div>
+            <p class="publications-editor__date">17.06.2022</p>
+            <p class="publications-editor__date">17.06.2022</p>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Горячая новость до</p>
+          <div
+            class="publications-editor__value publications-editor__value_direction"
+          >
+            <div class="employees-profile__checkbox main-checkbox">
+              <input type="checkbox" class="main-checkbox__input" />
+              <div class="main-checkbox__checkmark"></div>
+              <div class="checkbox__body"></div>
+            </div>
+            <p class="publications-editor__date">17.06.2022</p>
+            <p class="publications-editor__date">17.06.2022</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row">
+        <button
+          class="publications-editor__permission publications-editor__permission_red"
+        >
+          Не одобрить</button
+        ><button
+          class="publications-editor__permission publications-editor__permission_blue"
+        >
+          Одобрить
+        </button>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row">
+        <p class="publications-editor__parameter">Комментарий</p>
+        <div
+          class="publications-editor__value publications-editor__value_width"
+        >
+          <input type="text" class="publications-editor__input" />
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div
+          class="publications-editor__value publications-editor__value_width publications-editor__value_relative"
+        >
+          <textarea
+            name="commentForPublication"
+            placeholder="Начните писать.."
+            cols="30"
+            rows="1"
+            class="publications-editor__textarea"
+          ></textarea>
+          <div
+            class="publications-editor__icon publications-editor__icon_absolute"
+          >
+            <ChatIcon />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="publications-editor__block">
+      <div class="publications-editor__row main-line">
+        <h4 class="publications-editor__subtitle">История:</h4>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__comment comment-editor">
+          <div class="comment-editor__top">
+            <div class="comment-editor__user">
+              <div class="comment-editor__image">
+                <img src="@/assets/images/users/avatar1.png" alt="avatar" />
+              </div>
+              <p class="comment-editor__name">Ульянова Анна</p>
+            </div>
+            <div class="comment-editor__date">
+              <p>09.11.2022</p>
+              <p>21:33</p>
+            </div>
+          </div>
+          <div class="comment-editor__body">
+            <p>Статус статьи изменен</p>
+            <div class="comment-editor__status">Архив</div>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__comment comment-editor">
+          <div class="comment-editor__body">
+            <p class="comment-editor__text comment-editor__text_bold">
+              Отправка на модерацию
+            </p>
+            <p class="comment-editor__text comment-editor__text_light">
+              17.06.2022
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__comment comment-editor">
+          <div class="comment-editor__body">
+            <p class="comment-editor__text comment-editor__text_bold">
+              Отправка на модерацию
+            </p>
+            <p class="comment-editor__text comment-editor__text_light">
+              17.06.2022
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__comment comment-editor">
+          <div class="comment-editor__body">
+            <p class="comment-editor__text comment-editor__text_bold">
+              Сохранение
+            </p>
+            <p class="comment-editor__text comment-editor__text_light">
+              17.06.2022
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__comment comment-editor">
+          <div class="comment-editor__body">
+            <p class="comment-editor__text comment-editor__text_bold">
+              Создание публикации
+            </p>
+            <p class="comment-editor__text comment-editor__text_light">
+              17.06.2022
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ArchiveIcon from "@/assets/images/icons/archive.svg?inline";
+import PenIcon from "@/assets/images/icons/pen.svg?inline";
+import PlusIcon from "@/assets/images/icons/plus.svg?inline";
+import ChatIcon from "@/assets/images/icons/chat.svg?inline";
+import SingleDate from "@/components/main/SingleDate";
+import CloseIcon from "@/assets/images/icons/close.svg?inline";
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+      countries: [
+        "RUS",
+        "UKR",
+        "BLR",
+        "LTU",
+        "LAT",
+        "KAZ",
+        "EST",
+        "POL",
+        "MDA",
+      ],
+      tags: ["Украина", "Горячие новости"],
+      currentTag: "",
+    };
+  },
+  components: {
+    ArchiveIcon,
+    PenIcon,
+    PlusIcon,
+    CloseIcon,
+    ChatIcon,
+    SingleDate,
+  },
+  computed: {
+    ...mapGetters({
+      getArticle: "Main/getPublicationById",
+      getAuthor: "Main/getAuthorById",
+    }),
+    currentArticle() {
+      return this.getArticle(this.$route.params.id);
+    },
+  },
+  methods: {
+    addTag() {
+      if (this.currentTag == "") {
+        console.error("Тег не может быть пустой строкой");
+      } else {
+        this.tags.push(this.currentTag);
+        this.currentTag = "";
+      }
+    },
+    deleteTag(tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+    },
+    changeAvailableCountries(country) {
+      if (this.currentArticle.availableCountries.includes(country)) {
+        this.currentArticle.availableCountries.splice(
+          this.currentArticle.availableCountries.indexOf(country),
+          1
+        );
+      } else {
+        this.currentArticle.availableCountries.push(country);
+      }
+    },
+  },
+};
+</script>
+<style lang="scss">
+.publications-editor {
+  p {
+    font-weight: 700;
+    color: #353132;
+  }
+  &__block {
+    background: #fff;
+    margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    column-gap: 8px;
+    &.main-line {
+      display: flex;
+      justify-content: space-between;
+    }
+    &_center {
+      justify-content: center;
+    }
+    &_margin {
+      margin-bottom: 0;
+    }
+  }
+  &__icon {
+    &_absolute {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  &__info {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    width: 100%;
+  }
+  &__value {
+    &_width {
+      width: 100%;
+    }
+    &_relative {
+      position: relative;
+    }
+    &_status {
+      padding: 2px 8px;
+      text-transform: uppercase;
+      font-size: 12px;
+      border-radius: 8px;
+      p {
+        color: #fff;
+      }
+    }
+    &_author {
+      .main-table-author__name {
+        font-size: 12px;
+      }
+      .main-table-author__tag {
+        font-size: 8px;
+      }
+      .main-table-author__list li p {
+        font-size: 6px;
+      }
+      .main-table-author__image {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    &_red {
+      margin-left: 8px;
+      color: #b90c0c !important;
+    }
+    &_direction {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 8px;
+    cursor: pointer;
+    li {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__button {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      margin-right: 7px;
+    }
+  }
+  &__country {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    &_active {
+      border: 1px solid #e11b1b;
+      border-radius: 8px;
+    }
+  }
+
+  &__date {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+    max-width: 90px;
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+  &__input {
+    width: 100%;
+    padding: 2px 8px;
+    border: 1px solid #c0c0c0;
+    color: #231f20;
+    border-radius: 8px;
+    &_square {
+      border: 1px solid #231f20;
+      border-radius: 4px;
+    }
+  }
+  &__select {
+    width: 100%;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+  }
+  &__add {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+  &__tag {
+    padding: 2px 6px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    cursor: pointer;
+    p {
+      color: #231f20;
+      font-size: 12px;
+      font-weight: 400;
+      margin-left: 4px;
+    }
+  }
+  &__list.main-table__list {
+    width: auto;
+    justify-content: start;
+    li {
+      display: flex;
+      align-items: center;
+      border: none;
+    }
+  }
+  &__permission {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 5px 0;
+    color: #fff;
+    &_red {
+      background: #b90c0c;
+    }
+    &_blue {
+      background: #009688;
+    }
+  }
+  &__textarea {
+    position: relative;
+    width: 100%;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+    padding: 10px 8px;
+    align-items: center;
+    resize: none;
+  }
+}
+.comment-editor {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #c0c0c0;
+  border-radius: 8px;
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__user {
+    display: flex;
+    align-items: center;
+  }
+  &__name {
+    font-size: 10px;
+    margin-left: 5px;
+  }
+  &__body {
+    display: flex;
+    align-items: center;
+    p {
+      margin-right: 8px;
+    }
+  }
+  &__status {
+    padding: 2px 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #fff;
+    background: #000;
+    border-radius: 8px;
+  }
+  &__date {
+    display: flex;
+    p {
+      font-size: 10px;
+      font-weight: 400;
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+    }
+  }
+  &__text {
+    &_bold {
+      font-size: 16px;
+    }
+    &_light {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}
+.modal-date {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  &__count {
+    &:first-child {
+      font-size: 10px;
+      color: #c0c0c0;
+    }
+    &:last-child {
+      font-size: 12px;
+    }
+  }
+  &__item {
+    font-size: 9px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    line-height: 150%;
+    color: #353132;
+    font-weight: 700;
+    &:hover {
+      color: #b90c0c;
+    }
+  }
+  &__content {
+    padding: 8px;
+    max-width: 200px;
+    background: #fff;
+    border-radius: 4px;
+  }
+}
+</style>

@@ -13,9 +13,6 @@ export default {
     create(data) {
       this.CREATE_USER(data)
     },
-    mounted() {
-      console.log(1);
-    },
     ...mapActions("Users", ["CREATE_USER"]),
   },
 };

@@ -336,12 +336,12 @@
         </div>
       </div>
     </div>
-    <div class="employees-profile__submit" v-if="currentUser == null">
+    <div class="main-submit" v-if="currentUser == null">
       <button @click="saveData('newUser')">
         Зарегестрировать пользователя
       </button>
     </div>
-    <div class="employees-profile__submit" v-else>
+    <div class="main-submit" v-else>
       <button @click="saveData('saveChange')">Сохранить изменения</button>
       <button @click="saveData('deleteUser')">Удалить профиль</button>
     </div>
@@ -655,30 +655,6 @@ export default {
     cursor: pointer;
     input {
       pointer-events: none;
-    }
-  }
-  &__submit {
-    margin-top: 18px;
-    display: flex;
-    button {
-      font-size: 12px;
-      line-height: 20px;
-      font-weight: 700;
-      color: #b90c0c;
-      padding: 2px 8px;
-      border: 1px solid transparent;
-      background: #fff;
-      border-radius: 8px;
-      &:not(:last-child) {
-        margin-right: 16px;
-      }
-      &:hover {
-        border-color: #b90c0c;
-      }
-      &:active {
-        background: #b90c0c;
-        color: #fff;
-      }
     }
   }
   &__country {

@@ -53,10 +53,26 @@
             v-if="user.roles.includes('модератор')"
           >
             <div class="main-filter__block">
-              <button class="main-filter__button">KPI</button>
+              <router-link
+                :to="{ name: 'ModeratorUserKpi', query: {period: 'week'} }"
+                :class="{
+                  'main-filter__button_active':
+                    $route.name == 'ModeratorUserKpi',
+                }"
+                class="main-filter__button"
+                >KPI</router-link
+              >
             </div>
             <div class="main-filter__block">
-              <button class="main-filter__button">Настройки</button>
+              <router-link
+                :to="{ name: 'ModeratorUserSettings' }"
+                :class="{
+                  'main-filter__button_active':
+                    $route.name == 'ModeratorUserSettings',
+                }"
+                class="main-filter__button"
+                >Настройки</router-link
+              >
             </div>
           </div>
         </div>
