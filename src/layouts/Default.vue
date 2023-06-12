@@ -14,28 +14,37 @@
   <script>
 import Header from "@/components/main/Header.vue";
 import Footer from "@/components/main/Footer.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Default",
   components: {
     Header,
     Footer,
   },
+  beforeUpdate() {
+    this.changeSizeOfContainer();
+  },
   mounted() {
-    this.changeSizeOfContainer()
     window.addEventListener("resize", () => {
-      this.changeSizeOfContainer()
+      this.changeSizeOfContainer();
     });
   },
   methods: {
     changeSizeOfContainer() {
-      this.$store.commit("Main/changeSizeOfContainer", this.$refs.MainContainer.getBoundingClientRect())
-    }
+      this.$store.commit(
+        "Main/changeSizeOfContainer",
+        this.$refs.MainContainer.getBoundingClientRect()
+      );
+    },
   },
   computed: {
     layout() {
       const layoutName = this.$route.meta.layout || "Default";
       return () => import(`@/layouts/${layoutName}.vue`);
     },
+    ...mapGetters({
+      Container: "Main/getSizeOfContainer",
+    }),
   },
 };
 </script>
