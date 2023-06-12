@@ -1,6 +1,6 @@
 <template>
   <div class="admin-analytics__row row-analytics">
-    <div class="row-analytics__content">
+    <div class="row-analytics__content main-color">
       <div class="row-analytics__info">
         <div class="row-analytics__title">
           <p>Всего</p>
@@ -12,6 +12,7 @@
         >
           <div
             class="row-analytics__property"
+            :class="{ 'row-analytics__role': item.color }"
             :style="[
               item.color
                 ? {
@@ -89,6 +90,21 @@ export default {
   &__value {
     font-size: 14px;
     font-weight: 500;
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1600px) {
+    &__content {
+      grid-template-columns: 1fr 3fr;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__content {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__content {
+      grid-template-columns: 1fr;
+    }
   }
 }
 </style>

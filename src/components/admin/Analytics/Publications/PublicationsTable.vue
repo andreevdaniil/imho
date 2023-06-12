@@ -1,6 +1,6 @@
 <template>
   <div class="analytics-publications-table main-content">
-    <div class="analytics-publications-table__top main-table_white ">
+    <div class="analytics-publications-table__top main-table_white">
       <div class="analytics-publications-table__row">
         <div
           class="analytics-publications-table__parameter main-table__column"
@@ -349,6 +349,14 @@ export default {
     p {
       text-align: justify;
       line-height: 21px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    &__row {
+      grid-template-columns: 4fr 1fr 4fr 2fr repeat(7, 1fr);
+    }
+    &__value p {
+      line-height:normal;
     }
   }
 }

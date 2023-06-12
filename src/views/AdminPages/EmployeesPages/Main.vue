@@ -1,14 +1,14 @@
 <template>
   <div>
-    <AdminHeader />
+    <Header />
     <router-view></router-view>
   </div>
 </template>
 <script>
-import AdminHeader from "@/components/admin/Employees/Header.vue"
+import Header from "@/components/admin/Employees/Header.vue"
 export default {
-    components: {
-        AdminHeader
-    }
+  components: {
+    Header
+  }
 }
 </script>

@@ -27,7 +27,7 @@
         class="publications-new-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
         <div class="publications-new-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
@@ -135,18 +135,22 @@ export default {
       getRange: "Main/getRange",
       CurrentUser: "Users/getCurrentUser",
       getTextForPeriod: "Main/getTextForPeriod",
+      availableCountries: "Main/getAvailableCountries",
     }),
     filteredPublications() {
       return this.publications.filter(
         (item) =>
           item.status == "undefined" &&
-          new Date(item[this.getTextForPeriod]).getTime() >=
-            this.getRange.start &&
-          new Date(item[this.getTextForPeriod]).getTime() <=
-            this.getRange.end &&
-          item.availableCountries.some((e) =>
-            this.CurrentUser.availableCountries.includes(e)
+          item.availableCountries.some((element) =>
+            this.availableCountries.includes(element)
           )
+        // new Date(item[this.getTextForPeriod]).getTime() >=
+        //   this.getRange.start &&
+        // new Date(item[this.getTextForPeriod]).getTime() <=
+        //   this.getRange.end &&
+        // item.availableCountries.some((e) =>
+        //   this.CurrentUser.availableCountries.includes(e)
+        // )
       );
     },
   },
@@ -196,6 +200,19 @@ export default {
     p {
       font-size: 14px;
       font-weight: 500;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1600px) {
+    &__row {
+      grid-template-columns: 1fr 9fr 2fr 5fr 3fr 2fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__row {
+      grid-template-columns: 1fr 5fr 2fr 5fr 3fr 2fr;
+    }
+    &__moder img {
+      width: 24px;
     }
   }
 }

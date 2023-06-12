@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="main-layout">
     <Header />
     <div class="main-background">
@@ -15,7 +15,7 @@ import Footer from "@/components/main/Footer.vue";
 // import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 export default {
-  name: "Default",
+  name: "ModeratorLayout",
   components: {
     Header,
     Footer,
@@ -42,4 +42,4 @@ export default {
 };
 </script>
   
-  
+   -->

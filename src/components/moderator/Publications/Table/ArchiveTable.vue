@@ -18,8 +18,10 @@
           <p>Страны</p>
           <FilterArrowsIcon class="publications-archive-table__icon" />
         </div>
-        <div class="publications-archive-table__parameter main-table__column">
-          <p>Дата публ.</p>
+        <div
+          class="publications-archive-table__parameter main-table__column main-table__column_abridged"
+        >
+          <p>Дата публикации</p>
         </div>
         <div class="publications-archive-table__parameter main-table__column">
           <p>Статус</p>
@@ -43,7 +45,7 @@
         class="publications-archive-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
         <div class="publications-archive-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
@@ -204,11 +206,15 @@ export default {
     ...mapGetters({
       getAuthor: "Main/getAuthorById",
       getRange: "Main/getRange",
-      CurrentUser: "Users/getCurrentUser",
       UserById: "Users/getUserById",
+      availableCountries: "Main/getAvailableCountries",
     }),
     filteredPublications() {
-      return this.publications;
+      return this.publications.filter((item) =>
+        item.availableCountries.some((element) =>
+          this.availableCountries.includes(element)
+        )
+      );
     },
   },
   methods: {
@@ -286,6 +292,37 @@ export default {
     }
     &_purple {
       color: #7b61ff;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__icon {
+      display: none;
+    }
+    &__value p {
+      font-size: 12px;
+    }
+    &__row {
+      grid-template-columns: 1fr 3fr 5fr 2fr 2fr 3fr 2fr 3fr 1fr 3fr 1fr;
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__icon {
+      display: none;
+    }
+    &__row {
+      grid-template-columns: 1fr 7fr 8fr 3fr 3fr 4fr 4fr 7fr 2fr 4fr 2fr;
+    }
+    &__moderator {
+      img {
+        width: 24px;
+        height: 24px;
+      }
+      p {
+        font-size: 8px !important;
+      }
     }
   }
 }

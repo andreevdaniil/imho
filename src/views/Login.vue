@@ -76,13 +76,16 @@ export default {
       };
       this.auth(data).then(
         () => {
-          this.$router.push({ name: "AdminEmployeesTable" });
+          if (this.user.roles.includes("модератор")) {
+            this.$router.push({ name: "ModeratorPublicationsTableNew" });
+          } else if (this.user.roles.includes("администратор")) {
+            this.$router.push({ name: "AdminEmployeesTable" });
+          }
           this.clearErrors();
         },
         (error) => {
           this.errors.loginIsError = error.loginIsError;
           this.errors.passwordIsError = error.passwordIsError;
-          console.log(error);
         }
       );
     },
@@ -176,6 +179,12 @@ export default {
     border: 2px solid #c0c0c0;
     border-radius: 8px;
     cursor: pointer;
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__content {
+      width: 100%;
+      padding: 14px 13px;
+    }
   }
 }
 </style>

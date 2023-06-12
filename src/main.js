@@ -8,8 +8,9 @@ import "@/assets/styles/style.css"
 Vue.use(VCalendar)
 Vue.config.productionTip = false
 
-new Vue({
+const vm = new Vue({
     store,
     router,
     render: h => h(App)
 }).$mount('#app')
+export {vm}

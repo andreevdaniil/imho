@@ -35,5 +35,5 @@ export default {
     },
     getUserById({ state }, data) {
         return state.listOfAuthors.find(x => x.id == data)
-    }
+    },
 }

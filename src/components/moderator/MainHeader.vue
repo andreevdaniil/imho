@@ -8,12 +8,12 @@
     <h2 class="moderator-page__title">Модерация</h2>
     <ModeratorSearch v-if="$route.name != 'ModeratorPublicationsArticle'" />
     <div
-      class="main-filter moderator-page__filter"
+      class="main-filter moderator-page__filter main-color"
       v-if="$route.name != 'ModeratorPublicationsArticle'"
     >
       <router-link
         :to="{ name: 'ModeratorPublicationsTableNew' }"
-        class="main-filter__button"
+        class="main-filter__button main-filter__button_long"
         :class="{
           'main-filter__button_active': ~$route.name.indexOf(
             'ModeratorPublicationsTable'
@@ -24,7 +24,7 @@
       </router-link>
       <router-link
         :to="{ name: 'ModeratorPublicationsCalendarNew' }"
-        class="main-filter__button"
+        class="main-filter__button main-filter__button_long"
         :class="{
           'main-filter__button_active': ~$route.name.indexOf(
             'ModeratorPublicationsCalendar'
@@ -65,6 +65,27 @@ export default {
     font-size: 32px;
     font-weight: 700;
     color: #231f20;
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__title {
+      font-size: 24px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__top {
+      display: grid;
+      grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    }
+    &__title {
+      font-size: 16px;
+    }
+    &__filter {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      .main-filter__button {
+        text-align: center;
+      }
+    }
   }
 }
 </style>

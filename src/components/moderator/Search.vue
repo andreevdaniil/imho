@@ -1,6 +1,6 @@
 <template>
   <div class="moderator-search">
-    <div class="moderator-search__wrapper">
+    <div class="moderator-search__wrapper main-color">
       <div class="moderator-search__icon">
         <SearchIcon />
       </div>
@@ -68,6 +68,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.dark .moderator-search__wrapper {
+  border-color: transparent;
+}
 .moderator-search {
   min-width: 600px;
   &__wrapper {
@@ -107,6 +110,22 @@ export default {
       font-size: 12px;
       font-weight: 700;
       color: #c0c0c0;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    min-width: 310px;
+    &__wrapper {
+      padding: 6px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    min-width: auto;
+    width: 100%;
+    grid-row: 2;
+    grid-column: 1 / 3;
+    margin-top: 8px;
+    &__wrapper {
+      padding: 5px;
     }
   }
 }

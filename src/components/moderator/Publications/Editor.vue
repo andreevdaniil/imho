@@ -1,116 +1,120 @@
 <template>
   <div class="publications-editor" v-if="currentArticle">
-    <div class="publications-editor__content">
-      <div class="publications-editor__block">
-        <div class="publications-editor__row main-line">
-          <h5 class="publications-editor__title">Информация о статье</h5>
-          <div class="publications-editor__icon"><ArchiveIcon /></div>
-        </div>
-        <div class="publications-editor__row">
-          <div class="publications-editor__info">
-            <p class="publications-editor__parameter">Статус</p>
-            <div
-              class="publications-editor__value publications-editor__value_status"
-              :style="{
-                background:
-                  currentArticle.status == 'approved' ? '#7B61FF' : '',
-              }"
-            >
-              <p>
-                {{ currentArticle.status == "approved" ? "Новый" : "" }}
-              </p>
-            </div>
+    <div class="publications-editor__block main-color">
+      <div class="publications-editor__row main-line">
+        <h5 class="publications-editor__title">Информация о статье</h5>
+        <div class="publications-editor__icon"><ArchiveIcon /></div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Статус</p>
+          <div
+            class="publications-editor__value publications-editor__value_status"
+            :style="{
+              background:
+                currentArticle.status == 'approved'
+                  ? '#009688'
+                  : currentArticle.status == 'undefined'
+                  ? '#7B61FF'
+                  : currentArticle.status == 'rejected'
+                  ? '#B90C0C'
+                  : '',
+            }"
+          >
+            <p v-if="currentArticle.status == 'approved'">Одобрен</p>
+            <p v-if="currentArticle.status == 'undefined'">Новый</p>
+            <p v-if="currentArticle.status == 'rejected'">Не одобрен</p>
           </div>
         </div>
-        <div class="publications-editor__row">
-          <div class="publications-editor__info">
-            <p class="publications-editor__parameter">Автор, соавторы</p>
-            <div
-              class="publications-editor__value publications-editor__value_author"
-            >
-              <div class="main-table-author">
-                <div class="main-table-author__image">
-                  <img src="@/assets/images/users/avatar2.png" alt="user" />
-                </div>
-                <div class="main-table-author__info">
-                  <p class="main-table-author__name">
-                    {{
-                      getAuthor(currentArticle.authorId)
-                        ? getAuthor(currentArticle.authorId).name
-                        : ""
-                    }}
-                    {{
-                      getAuthor(currentArticle.authorId)
-                        ? getAuthor(currentArticle.authorId).surname
-                        : ""
-                    }}
-                  </p>
-                  <p class="main-table-author__tag">
-                    {{
-                      getAuthor(currentArticle.authorId)
-                        ? getAuthor(currentArticle.authorId).tag
-                        : ""
-                    }}
-                  </p>
-                  <ul class="main-table-author__list">
-                    <li
-                      v-for="role in getAuthor(currentArticle.authorId)
-                        ? getAuthor(currentArticle.authorId).roles
-                        : []"
-                      :key="role"
-                      :style="[
-                        role == 'Лидер мнений'
-                          ? { background: '#CEE9FF' }
-                          : { background: '#E2E2E2' },
-                      ]"
-                    >
-                      <p>{{ role }}</p>
-                    </li>
-                  </ul>
-                </div>
+      </div>
+      <div class="publications-editor__row">
+        <div class="publications-editor__info">
+          <p class="publications-editor__parameter">Автор, соавторы</p>
+          <div
+            class="publications-editor__value publications-editor__value_author"
+          >
+            <div class="main-table-author">
+              <div class="main-table-author__image">
+                <img src="@/assets/images/users/avatar2.png" alt="user" />
+              </div>
+              <div class="main-table-author__info">
+                <p class="main-table-author__name">
+                  {{
+                    getAuthor(currentArticle.authorId)
+                      ? getAuthor(currentArticle.authorId).name
+                      : ""
+                  }}
+                  {{
+                    getAuthor(currentArticle.authorId)
+                      ? getAuthor(currentArticle.authorId).surname
+                      : ""
+                  }}
+                </p>
+                <p class="main-table-author__tag">
+                  {{
+                    getAuthor(currentArticle.authorId)
+                      ? getAuthor(currentArticle.authorId).tag
+                      : ""
+                  }}
+                </p>
+                <ul class="main-table-author__list">
+                  <li
+                    v-for="role in getAuthor(currentArticle.authorId)
+                      ? getAuthor(currentArticle.authorId).roles
+                      : []"
+                    :key="role"
+                    :style="[
+                      role == 'Лидер мнений'
+                        ? { background: '#CEE9FF' }
+                        : { background: '#E2E2E2' },
+                    ]"
+                  >
+                    <p>{{ role }}</p>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-        <div class="publications-editor__row">
-          <ul class="publications-editor__list">
-            <li>
-              <p class="publications-editor__parameter">Кол-во символов</p>
-              <p
-                class="publications-editor__value publications-editor__value_red"
-              >
-                6 117
-              </p>
-            </li>
-            <li>
-              <p class="publications-editor__parameter">Фотографии</p>
-              <p
-                class="publications-editor__value publications-editor__value_red"
-              >
-                6 117
-              </p>
-            </li>
-            <li>
-              <p class="publications-editor__parameter">Ссылки</p>
-              <p
-                class="publications-editor__value publications-editor__value_red"
-              >
-                6 117
-              </p>
-            </li>
-            <li>
-              <p class="publications-editor__parameter">Ошибки</p>
-              <p
-                class="publications-editor__value publications-editor__value_red"
-              >
-                6 117
-              </p>
-            </li>
-          </ul>
-        </div>
+      </div>
+      <div class="publications-editor__row">
+        <ul class="publications-editor__list publications-editor__list_grid">
+          <li>
+            <p class="publications-editor__parameter">Кол-во символов</p>
+            <p
+              class="publications-editor__value publications-editor__value_red"
+            >
+              6 117
+            </p>
+          </li>
+          <li>
+            <p class="publications-editor__parameter">Фотографии</p>
+            <p
+              class="publications-editor__value publications-editor__value_red"
+            >
+              6 117
+            </p>
+          </li>
+          <li>
+            <p class="publications-editor__parameter">Ссылки</p>
+            <p
+              class="publications-editor__value publications-editor__value_red"
+            >
+              6 117
+            </p>
+          </li>
+          <li>
+            <p class="publications-editor__parameter">Ошибки</p>
+            <p
+              class="publications-editor__value publications-editor__value_red"
+            >
+              6 117
+            </p>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row publications-editor__row_center">
         <button class="publications-editor__button">
           <PenIcon />
@@ -118,7 +122,7 @@
         </button>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row publications-editor__row_margin">
         <ul class="publications-editor__list">
           <li
@@ -135,7 +139,7 @@
         </ul>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row main-line">
         <h4 class="publications-editor__subtitme">Настройки</h4>
       </div>
@@ -255,7 +259,7 @@
         </div>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row main-line">
         <h4 class="publications-editor__subtitle">Страны</h4>
       </div>
@@ -291,8 +295,8 @@
         </ul>
       </div>
     </div>
-    <div class="publications-editor__block">
-      <div class="publications-editor__row">
+    <div class="publications-editor__block main-color">
+      <div class="publications-editor__row publications-editor__row_grid">
         <div class="publications-editor__info">
           <p class="publications-editor__parameter">Выбор редакции до</p>
           <div
@@ -308,7 +312,7 @@
           </div>
         </div>
       </div>
-      <div class="publications-editor__row">
+      <div class="publications-editor__row publications-editor__row_grid">
         <div class="publications-editor__info">
           <p class="publications-editor__parameter">Горячая новость до</p>
           <div
@@ -325,7 +329,7 @@
         </div>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row">
         <button
           class="publications-editor__permission publications-editor__permission_red"
@@ -338,7 +342,7 @@
         </button>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row">
         <p class="publications-editor__parameter">Комментарий</p>
         <div
@@ -366,7 +370,7 @@
         </div>
       </div>
     </div>
-    <div class="publications-editor__block">
+    <div class="publications-editor__block main-color">
       <div class="publications-editor__row main-line">
         <h4 class="publications-editor__subtitle">История:</h4>
       </div>
@@ -452,17 +456,6 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      countries: [
-        "RUS",
-        "UKR",
-        "BLR",
-        "LTU",
-        "LAT",
-        "KAZ",
-        "EST",
-        "POL",
-        "MDA",
-      ],
       tags: ["Украина", "Горячие новости"],
       currentTag: "",
     };
@@ -479,9 +472,17 @@ export default {
     ...mapGetters({
       getArticle: "Main/getPublicationById",
       getAuthor: "Main/getAuthorById",
+      user: "Users/getCurrentUser",
     }),
     currentArticle() {
       return this.getArticle(this.$route.params.id);
+    },
+    countries() {
+      if (this.user.roles.includes("администратор")) {
+        return ["RUS", "UKR", "BLR", "LTU", "LAT", "KAZ", "EST", "POL", "MDA"];
+      } else {
+        return this.user.availableCountries;
+      }
     },
   },
   methods: {
@@ -517,15 +518,17 @@ export default {
   }
   &__block {
     background: #fff;
-    margin-bottom: 16px;
     padding: 8px;
     border-radius: 8px;
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
   }
   &__row {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    column-gap: 8px;
+    column-gap: 10px;
     &.main-line {
       display: flex;
       justify-content: space-between;
@@ -570,10 +573,10 @@ export default {
     }
     &_author {
       .main-table-author__name {
-        font-size: 12px;
+        font-size: 12px !important;
       }
       .main-table-author__tag {
-        font-size: 8px;
+        font-size: 8px !important;
       }
       .main-table-author__list li p {
         font-size: 6px;
@@ -611,6 +614,8 @@ export default {
     align-items: center;
     svg {
       margin-right: 7px;
+      width: 17px;
+      height: 17px;
     }
   }
   &__country {
@@ -677,6 +682,7 @@ export default {
       display: flex;
       align-items: center;
       border: none;
+      width: 86px;
     }
   }
   &__permission {
@@ -703,7 +709,75 @@ export default {
     align-items: center;
     resize: none;
   }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__list_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      li:nth-child(2),
+      li:nth-child(4) {
+        justify-self: end;
+      }
+    }
+    &__parameter,
+    &__value {
+      font-size: 14px;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__row_margin &__list {
+      flex-wrap: wrap;
+      justify-content: start;
+      row-gap: 5px;
+    }
+    &__row_grid &__info {
+      flex-direction: column;
+      align-items: start;
+      row-gap: 8px;
+    }
+    &__list_grid {
+      flex-direction: column;
+      align-items: start;
+      li {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    &__parameter,
+    &__value {
+      font-size: 14px;
+    }
+    &__button {
+      font-size: 10px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__value,
+    &__parameter {
+      font-size: 12px;
+    }
+    &__button {
+      font-size: 12px;
+    }
+    &__row_margin &__list {
+      flex-wrap: wrap;
+      align-items: start;
+      justify-content: start;
+      row-gap: 5px;
+    }
+    &__list.main-table__list li {
+      width: 80px;
+    }
+    &__list_grid {
+      flex-direction: column;
+      align-items: start;
+      li {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  }
 }
+
 .comment-editor {
   width: 100%;
   padding: 8px;
@@ -753,6 +827,18 @@ export default {
     &_light {
       font-size: 16px;
       font-weight: 500;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__body {
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__body {
+      justify-content: space-between;
     }
   }
 }

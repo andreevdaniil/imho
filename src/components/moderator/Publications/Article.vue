@@ -1,6 +1,6 @@
 <template>
-  <div class="article main-content">
-    <div class="article__content">
+  <div class="article">
+    <div class="article__content main-content main-color">
       <div class="article__image">
         <img src="@/assets/images/articleImage.jpg" alt="articleBG" />
       </div>
@@ -53,12 +53,31 @@
 </template>
 <style lang="scss">
 .article {
+  overflow-y: auto;
   &__subtitle {
     font-size: 10px;
   }
   &__column {
     &:not(:last-child) {
       margin-bottom: 16px;
+    }
+  }
+  &__content {
+    padding: 16px;
+    border-radius: 24px;
+    height: 100%;
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__text {
+      font-size: 14px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__column img {
+      width: 100%;
+    }
+    &__text {
+      font-size: 12px;
     }
   }
 }

@@ -1,45 +1,47 @@
 <template>
-  <div class="publications-editors-table main-content">
-    <div class="publications-editors-table__top main-table_white">
-      <div class="publications-editors-table__row">
-        <div class="publications-editors-table__parameter main-table__column">
+  <div class="publications-editorial-table main-content">
+    <div class="publications-editorial-table__top main-table_white">
+      <div class="publications-editorial-table__row">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Id</p>
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Заголовок</p>
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Страны</p>
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Автор</p>
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div
+          class="publications-editorial-table__parameter main-table__column main-table__column_abridged"
+        >
           <p>Дата публикации</p>
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Тип</p>
-          <FilterArrowsIcon class="publications-editors-table__icon" />
+          <FilterArrowsIcon class="publications-editorial-table__icon" />
         </div>
-        <div class="publications-editors-table__parameter main-table__column">
+        <div class="publications-editorial-table__parameter main-table__column">
           <p>Модератор</p>
         </div>
       </div>
     </div>
-    <div class="publications-editors-table__body">
+    <div class="publications-editorial-table__body">
       <router-link
-        class="publications-editors-table__row"
+        class="publications-editorial-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
         </div>
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <p>{{ item.title }}</p>
         </div>
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <ul class="main-table__list main-table__list_direction">
             <li v-for="country in item.availableCountries" :key="country">
               <div class="main-table__icon">
@@ -56,7 +58,7 @@
             </li>
           </ul>
         </div>
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <div class="main-table-author">
             <div class="main-table-author__image">
               <img src="@/assets/images/users/avatar2.png" alt="user" />
@@ -95,16 +97,16 @@
             </div>
           </div>
         </div>
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <p>
             {{ new Date(item.publish).toLocaleDateString() }}
             {{ new Date(item.publish).toLocaleTimeString().slice(0, -3) }}
           </p>
         </div>
-        <div class="publications-editors-table__value main-table__column">
+        <div class="publications-editorial-table__value main-table__column">
           <ul class="main-table__list main-table__list_direction">
             <li v-for="elem in item.type" :key="elem">
-              <div class="main-table__icon publications-editors-table__type">
+              <div class="main-table__icon publications-editorial-table__type">
                 <img
                   :src="
                     require(`@/assets/images/icons/${elem.toLowerCase()}.svg`)
@@ -115,8 +117,8 @@
             </li>
           </ul>
         </div>
-        <div class="publications-editors-table__value main-table__column">
-          <div class="publications-editors-table__moder">
+        <div class="publications-editorial-table__value main-table__column">
+          <div class="publications-editorial-table__moder">
             <img src="@/assets/images/users/avatar1.png" alt="" />
             <p>
               {{ UserById(item.moderId) ? UserById(item.moderId).name : {} }}
@@ -159,15 +161,15 @@ export default {
     ...mapGetters({
       getAuthor: "Main/getAuthorById",
       getRange: "Main/getRange",
-      CurrentUser: "Users/getCurrentUser",
       UserById: "Users/getUserById",
+      availableCountries: "Main/getAvailableCountries",
     }),
     filteredPublications() {
       return this.publications.filter(
         (item) =>
           item.type.includes("users") &&
-          item.availableCountries.some((e) =>
-            this.CurrentUser.availableCountries.includes(e)
+          item.availableCountries.some((element) =>
+            this.availableCountries.includes(element)
           )
       );
     },
@@ -195,7 +197,7 @@ export default {
 };
 </script>
     <style lang="scss">
-.publications-editors-table {
+.publications-editorial-table {
   &__top {
     text-transform: uppercase;
     background: #b90c0c;
@@ -239,6 +241,27 @@ export default {
     p {
       margin-left: 4px;
       text-align: left;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 2fr 8fr 3fr 6fr 5fr 2fr 3fr;
+    }
+    &__moder p {
+      font-size: 10px !important;
+    }
+    &__value p {
+      font-size: 13px;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 2fr 6fr 4fr 2fr 3fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__row {
+      grid-template-columns: 1fr 4fr 2fr 5fr 3fr 2fr 3fr;
     }
   }
 }

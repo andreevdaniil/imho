@@ -7,7 +7,7 @@
       <div
         class="moderator-user-settings__row moderator-user-settings__row_big"
       >
-        <div class="moderator-user-settings__column">
+        <div class="moderator-user-settings__column main-color">
           <div class="moderator-user-settings__author">
             <div class="moderator-user-settings__info">
               <div class="moderator-user-settings__image">
@@ -58,7 +58,7 @@
             </div>
           </div>
         </div>
-        <div class="moderator-user-settings__column">
+        <div class="moderator-user-settings__column main-color">
           <h5 class="moderator-user-settings__subtitle">Пароль</h5>
           <div class="moderator-user-settings__password">
             <div class="moderator-user-settings__field">
@@ -77,7 +77,7 @@
         </div>
       </div>
       <div class="moderator-user-settings__row">
-        <div class="moderator-user-settings__column">
+        <div class="moderator-user-settings__column main-color">
           <h5 class="moderator-user-settings__subtitle">
             Настройки интерфейса
           </h5>
@@ -96,25 +96,28 @@
           >
             <p class="moderator-user-settings__parameter">Часовой пояс:</p>
             <div class="moderator-user-settings__value">
-              <select name="language" class="moderator-user-settings__select">
+              <select
+                name="timeZone"
+                class="moderator-user-settings__select moderator-user-settings__select_long"
+              >
                 <option value="RUS">(GMT + 02%00) Riga</option>
                 <option value="EN">(GMT + 02%00) Riga</option>
               </select>
-              <div class="moderator-user-settings__checkbox">
-                <div class="main-checkbox" @click="checkbox = !checkbox">
-                  <input
-                    type="checkbox"
-                    :checked="checkbox"
-                    class="main-checkbox__input"
-                  />
-                  <div class="main-checkbox__checkmark"></div>
-                  <div class="checkbox__body"></div>
-                </div>
-                <p>
-                  Автомотически устанавливать часовой пояс в зависимости от
-                  текущей геопозиции
-                </p>
+            </div>
+            <div class="moderator-user-settings__checkbox">
+              <div class="main-checkbox" @click="checkbox = !checkbox">
+                <input
+                  type="checkbox"
+                  :checked="checkbox"
+                  class="main-checkbox__input"
+                />
+                <div class="main-checkbox__checkmark"></div>
+                <div class="checkbox__body"></div>
               </div>
+              <p>
+                Автомотически устанавливать часовой пояс в зависимости от
+                текущей геопозиции
+              </p>
             </div>
           </div>
           <div class="moderator-user-settings__block">
@@ -122,7 +125,12 @@
               <p><SunIcon /> Ночной режим</p>
             </div>
             <div class="moderator-user-settings__value">
-              <input class="main-switch" type="checkbox" />
+              <input
+                :checked="night"
+                class="main-switch"
+                @click="changeMode"
+                type="checkbox"
+              />
             </div>
           </div>
         </div>
@@ -140,12 +148,22 @@ export default {
   data() {
     return {
       checkbox: true,
+      night: false,
     };
+  },
+  mounted() {
+    this.night = JSON.parse(localStorage.getItem("mode"));
   },
   computed: {
     ...mapGetters({
       currentUser: "Users/getCurrentUser",
     }),
+  },
+  methods: {
+    changeMode() {
+      this.night = !this.night
+      this.$store.commit("Main/changeMode", this.night);
+    },
   },
   components: {
     SunIcon,
@@ -229,7 +247,7 @@ export default {
     input {
       font-size: 12px;
       border: 1px solid #c0c0c0;
-      padding: 2px 8px;
+      padding: 4px 8px;
       border-radius: 8px;
     }
   }
@@ -266,6 +284,7 @@ export default {
     display: flex;
     align-items: center;
     margin-left: 5px;
+    column-gap: 5px;
   }
   &__checkbox .main-checkbox {
     width: 20px;
@@ -282,6 +301,99 @@ export default {
         transform: rotate(30deg);
         left: 5px;
       }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    &__title {
+      font-size: 24px;
+    }
+    &__row {
+      &_big {
+        grid-template-columns: 1fr;
+      }
+    }
+    &__block {
+      &_direction {
+        flex-direction: column;
+        align-items: start;
+        row-gap: 10px;
+      }
+    }
+    &__checkbox .main-checkbox,
+    &__checkbox {
+      margin-left: 0;
+    }
+    &__checkbox {
+      p {
+        font-size: 14px;
+      }
+    }
+    &__select {
+      &_long {
+        width: 300px;
+      }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__password {
+      flex-direction: column;
+      align-items: start;
+      row-gap: 8px;
+    }
+    &__field {
+      margin-right: 0;
+      width: 100%;
+      label {
+        font-size: 12px;
+      }
+      input {
+        width: 100%;
+      }
+    }
+    &__parameter,
+    &__field label,
+    &__checkbox p {
+      font-size: 12px;
+    }
+    &__checkbox {
+      p {
+        line-height: 18px;
+      }
+      align-items: start;
+    }
+    &__subtitle {
+      font-size: 16px;
+    }
+    &__name {
+      p:first-child {
+        font-size: 16px;
+      }
+      p:last-child {
+        font-size: 10px;
+      }
+    }
+    &__roles li p {
+      font-size: 10px;
+    }
+    .main-submit,
+    button {
+      width: 100%;
+    }
+    &__select_long,
+    &__block_direction &__value {
+      width: 100%;
+    }
+    &__column {
+      padding: 8px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 428px) {
+    &__title {
+      font-size: 16px;
+    }
+
+    &__checkbox p {
+      margin-left: 5px;
     }
   }
 }

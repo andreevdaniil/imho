@@ -14,7 +14,9 @@
         <div class="publications-hot-table__parameter main-table__column">
           <p>Автор</p>
         </div>
-        <div class="publications-hot-table__parameter main-table__column">
+        <div
+          class="publications-hot-table__parameter main-table__column main-table__column_abridged"
+        >
           <p>Дата публикации</p>
         </div>
         <div class="publications-hot-table__parameter main-table__column">
@@ -31,7 +33,7 @@
         class="publications-hot-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
         <div class="publications-hot-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
@@ -150,7 +152,6 @@ export default {
   },
   mounted() {
     this.changePeriod();
-    console.log(this.getRange);
   },
   components: {
     Paginator,
@@ -160,15 +161,15 @@ export default {
     ...mapGetters({
       getAuthor: "Main/getAuthorById",
       getRange: "Main/getRange",
-      CurrentUser: "Users/getCurrentUser",
       UserById: "Users/getUserById",
+      availableCountries: "Main/getAvailableCountries",
     }),
     filteredPublications() {
       return this.publications.filter(
         (item) =>
           item.type.includes("fire") &&
-          item.availableCountries.some((e) =>
-            this.CurrentUser.availableCountries.includes(e)
+          item.availableCountries.some((element) =>
+            this.availableCountries.includes(element)
           )
       );
     },
@@ -208,7 +209,7 @@ export default {
   &__row {
     display: grid;
     grid-template-columns: 2fr 10fr 4fr 5fr 6fr 2fr 3fr;
-    color: #353132
+    color: #353132;
   }
   &__value {
     p {
@@ -238,6 +239,29 @@ export default {
     p {
       margin-left: 4px;
       text-align: left;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 2fr 8fr 3fr 6fr 5fr 2fr 3fr;
+    }
+    &__moder {
+      p {
+        font-size: 10px !important;
+      }
+    }
+    &__value p {
+      font-size: 13px;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 2fr 6fr 4fr 2fr 3fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__row {
+      grid-template-columns: 1fr 4fr 2fr 6fr 3fr 2fr 3fr;
     }
   }
 }

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <component :is="layout">
+      <router-view></router-view>
+    </component>
   </div>
 </template>
 <script>
@@ -9,23 +11,28 @@ import { mapActions } from "vuex";
 export default {
   mounted() {
     this.GET_USERS_FROM_API();
-    if (localStorage.user) {
-      this.$store.commit("Users/changeUserByLocalStorage");
-    }
     this.GET_PUBLICATIONS_FROM_API();
     this.GET_AUTHORS_FROM_API();
     this.GET_THEMES_FROM_API();
-    this.GET_ARCHIVE_FROM_API()
+    this.GET_ARCHIVE_FROM_API();
+    if (localStorage.user) {
+      this.$store.commit("Users/changeUserByLocalStorage");
+    }
+    if (this.currentMode) {
+      document.body.classList.add('dark')
+    }
   },
   computed: {
     layout() {
       const layoutName = this.$route.meta.layout || "Empty";
-      console.log(this.$route.meta);
       return () => import(`@/layouts/${layoutName}.vue`);
     },
     ...mapGetters({
       CurrentUser: "Users/getCurrentUser",
     }),
+    currentMode() {
+      return JSON.parse(localStorage.getItem("mode"));
+    },
   },
   methods: {
     ...mapActions("Users", ["GET_USERS_FROM_API"]),
@@ -35,7 +42,7 @@ export default {
       "GET_THEMES_FROM_API",
       "GET_ARCHIVE_FROM_API",
     ]),
-  },
+  }
 };
 </script>
 <style>

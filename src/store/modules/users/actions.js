@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { vm } from '@/main'
 export default {
     auth({ state, commit }, data) {
         // Тут должен быть запрос на сервер
@@ -21,6 +22,11 @@ export default {
             }
         })
     },
+    logout({ commit }) {
+        commit('changeCurrentUser', null)
+        localStorage.clear()
+        vm.$router.push({ name: 'Login' })
+    },
     GET_USERS_FROM_API({ commit }) {
         return axios('http://localhost:3000/users', {
                 method: 'GET'
@@ -31,10 +37,12 @@ export default {
             })
     },
     CREATE_USER({ state }, user) {
-        console.log(state);
         axios.post('http://localhost:3000/users', user).then(() => {
-            alert('Успешно')
+
+        alert('Успешно')
         }).catch(error => {
+            console.log(state);
+
             console.error(error);
         });
     },

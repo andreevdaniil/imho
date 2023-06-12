@@ -28,7 +28,7 @@
         class="publications-rejected-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
         <div class="publications-rejected-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
@@ -200,6 +200,30 @@ export default {
       font-size: 11px;
       margin-left: 4px;
       text-align: left;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 4fr 2fr 3fr 2fr;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 4fr 2fr 3fr 2fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__row {
+      grid-template-columns: 1fr 4fr 4fr 2fr 3fr 2fr;
+    }
+    &__moderator {
+      img {
+        width: 24px;
+        height: 24px;
+        p {
+          font-size: 8px !important;
+        }
+      }
     }
   }
 }

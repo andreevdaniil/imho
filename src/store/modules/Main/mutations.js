@@ -12,6 +12,9 @@ export default {
             state.availableCountries.push(data)
         }
     },
+    changeSizeOfContainer(state, data) {
+        state.mainContainer = data
+    },
     SET_AUTHORS(state, data) {
         state.listOfAuthors = data
     },
@@ -29,5 +32,14 @@ export default {
     },
     changeTextForPeriod(state, data) {
         state.textForPeriod = data
+    },
+    changeMode(state, data) {
+        if (data) {
+            document.body.classList.add('dark')
+        } else {
+            document.body.classList.remove('dark')
+        }
+        localStorage.setItem('mode', JSON.stringify(data))
+
     }
 }

@@ -1,48 +1,15 @@
 <template>
   <div class="admin-page">
     <div class="admin-page__content">
-      <EmployeesTable :users="paginatedUsers" />
-      <MainPaginator
-        @changePaginatedItems="changeData"
-        :items="filteredUsers"
-      />
+      <EmployeesTable />
     </div>
   </div>
 </template>
 <script>
 import EmployeesTable from "@/components/admin/Employees/EmployeesTable.vue";
-import MainPaginator from "@/components/main/Paginator.vue";
-import { mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      paginatedUsers: [],
-    };
-  },
   components: {
     EmployeesTable,
-    MainPaginator,
-  },
-  computed: {
-    ...mapGetters({
-      users: "Users/getListOfUsers",
-      currentUser: "Users/getCurrentUser",
-      availableCountries: "Main/getAvailableCountries",
-    }),
-    filteredUsers() {
-      return this.users.filter((item) => {
-        return (
-          item.availableCountries.some((element) =>
-            this.availableCountries.includes(element)
-          ) && item.id != this.currentUser.id
-        );
-      });
-    },
-  },
-  methods: {
-    changeData(data) {
-      this.paginatedUsers = data;
-    },
   },
 };
 </script>

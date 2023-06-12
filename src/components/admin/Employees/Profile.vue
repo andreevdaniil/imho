@@ -1,7 +1,7 @@
 <template>
   <div class="employees-profile">
-    <div class="employees-profile__content main-content">
-      <div class="employees-profile__top employees-profile_after">
+    <div class="employees-profile__content main-content main-color">
+      <div class="employees-profile__top main-line">
         <div class="employees-profile__title">
           <h4 v-if="$route.name == 'AdminEmployeesView'">Просмотр профиля</h4>
           <h4 v-else>Регистрация нового сотрудника</h4>
@@ -25,8 +25,46 @@
       </div>
       <div class="employees-profile__body">
         <div class="employees-profile__form">
-          <div class="employees-profile__block">
+          <div class="employees-profile__block" v-if="currentUser">
             <div class="employees-profile__row">
+              <div class="employees-profile__image">
+                <img
+                  type="image"
+                  class="employees-profile__image"
+                  :src="require('@/assets/images/users/avatar2.png')"
+                  alt="user"
+                />
+              </div>
+              <div class="employees-profile__info">
+                <p class="employees-profile__name">
+                  {{ currentUser.name }} {{ currentUser.surname }}
+                  {{ currentUser.email }}
+                </p>
+                <ul class="main-table__list main-table__list">
+                  <li
+                    v-for="country in currentUser.availableCountries"
+                    :key="country"
+                  >
+                    <div class="main-table__icon">
+                      <img
+                        :src="
+                          require(`@/assets/images/icons/flags/${country.toLowerCase()}.svg`)
+                        "
+                        alt=""
+                      />
+                    </div>
+                    <p class="main-table__text main-table__text_bold">
+                      {{ country }}
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="employees-profile__block">
+            <div
+              class="employees-profile__row employees-profile__row_direction"
+            >
               <div
                 class="employees-profile__field"
                 :class="{
@@ -101,42 +139,7 @@
               </div>
             </div>
           </div>
-          <div class="employees-profile__block" v-if="currentUser">
-            <div class="employees-profile__row">
-              <div class="employees-profile__image">
-                <img
-                  type="image"
-                  class="employees-profile__image"
-                  :src="require('@/assets/images/users/avatar2.png')"
-                  alt="user"
-                />
-              </div>
-              <div class="employees-profile__info">
-                <p class="employees-profile__name">
-                  {{ currentUser.name }} {{ currentUser.surname }}
-                  {{ currentUser.email }}
-                </p>
-                <ul class="main-table__list main-table__list">
-                  <li
-                    v-for="country in currentUser.availableCountries"
-                    :key="country"
-                  >
-                    <div class="main-table__icon">
-                      <img
-                        :src="
-                          require(`@/assets/images/icons/flags/${country.toLowerCase()}.svg`)
-                        "
-                        alt=""
-                      />
-                    </div>
-                    <p class="main-table__text main-table__text_bold">
-                      {{ country }}
-                    </p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+
           <div class="employees-profile__block">
             <div class="employees-profile__subtitle">
               <div class="employees-profile__icon">
@@ -172,14 +175,12 @@
                     {{ country }}
                   </p>
                 </li>
+                <li>
+                  <button class="button-red" @click="changeCountry('Все')">
+                    Выбрать все
+                  </button>
+                </li>
               </ul>
-              <button
-                :style="{ 'margin-left': '16px' }"
-                class="button-red"
-                @click="changeCountry('Все')"
-              >
-                Выбрать все
-              </button>
             </div>
             <div class="employees-profile__block">
               <div class="employees-profile__subtitle">
@@ -227,7 +228,9 @@
           </div>
         </div>
         <div class="employees-profile__form">
-          <div class="employees-profile__block employees-profile_after">
+          <div
+            class="employees-profile__block employees-profile__title employees-profile_after"
+          >
             <h4>Загрузить фото</h4>
           </div>
           <div class="employees-profile__block">
@@ -239,7 +242,7 @@
               </div>
               <h4>Обязательно для заполнения</h4>
             </div>
-            <div class="employees-profile__row">
+            <div class="employees-profile__row employees-profile__row_grid">
               <div
                 class="employees-profile__image employees-profile__image_big"
               >
@@ -251,34 +254,32 @@
                   alt="user"
                 />
               </div>
-              <div class="employees-profile__info">
-                <div class="employees-profile__require">
-                  <p>Требование к фото:</p>
-                  <p>
-                    объем не более 1МБ, размер не менее 200х200 пикселей, формат
-                    jpg, jpeg, png
-                  </p>
-                </div>
-                <div class="employees-profile__require">
-                  <p>Просьба</p>
-                  <p>
-                    Постарайтесь, пожалуйста, подобрать фото или картинку так,
-                    чтобы она хорошо читалась. Была яркая и внятная. Всегда
-                    приятно при общении видеть лицо собеседника.
-                  </p>
-                </div>
-                <div class="employees-profile__button">
-                  <label for="uploadPhoto" class="button-red"
-                    >Изменить фото</label
-                  >
-                  <input
-                    type="file"
-                    class="employees-profile__upload"
-                    id="uploadPhoto"
-                    accept="image/jpeg, image/png, image.jpg"
-                    @change="uploadImage"
-                  />
-                </div>
+              <div class="employees-profile__require">
+                <p>Требование к фото:</p>
+                <p>
+                  объем не более 1МБ, размер не менее 200х200 пикселей, формат
+                  jpg, jpeg, png
+                </p>
+              </div>
+              <div class="employees-profile__require">
+                <p>Просьба</p>
+                <p>
+                  Постарайтесь, пожалуйста, подобрать фото или картинку так,
+                  чтобы она хорошо читалась. Была яркая и внятная. Всегда
+                  приятно при общении видеть лицо собеседника.
+                </p>
+              </div>
+              <div class="employees-profile__button">
+                <label for="uploadPhoto" class="button-red"
+                  >Изменить фото</label
+                >
+                <input
+                  type="file"
+                  class="employees-profile__upload"
+                  id="uploadPhoto"
+                  accept="image/jpeg, image/png, image.jpg"
+                  @change="uploadImage"
+                />
               </div>
             </div>
           </div>
@@ -287,8 +288,10 @@
           <div class="employees-profile__block employees-profile_after">
             <h4>Пароль</h4>
           </div>
-          <div class="employees-profile__block">
-            <div class="employees-profile__row">
+          <div class="employees-profile__block employees-profile__block">
+            <div
+              class="employees-profile__row employees-profile__row_direction"
+            >
               <div
                 class="employees-profile__field"
                 :class="{
@@ -422,7 +425,7 @@ export default {
       } else if (action == "saveChange") {
         this.CHANGE_USER(this.changedUser);
       }
-      this.$router.push({name: 'AdminEmployeesTable'})
+      this.$router.push({ name: "AdminEmployeesTable" });
     },
     hasError() {
       let reEmail =
@@ -539,10 +542,14 @@ export default {
   &__row {
     display: flex;
     align-items: center;
-    &_direction {
-      flex-direction: column;
-      align-items: start;
+    &_grid {
+      display: grid;
+      align-items: center;
+      grid-template: repeat(3, 1fr) / 1fr 8fr;
     }
+  }
+  &__row_grid &__image {
+    grid-row: 1 / 4;
   }
   &__input {
     position: relative;
@@ -597,7 +604,6 @@ export default {
       object-fit: cover;
     }
     &_big {
-      margin-right: 24px;
       img {
         width: 128px;
         height: 128px;
@@ -637,12 +643,11 @@ export default {
         height: 100%;
         width: 2px;
         background: #e2e2e2;
-        right: -8px;
+        right: -9px;
       }
     }
   }
   &__require {
-    margin-bottom: 10px;
     p {
       font-size: 12px;
       &:last-child {
@@ -681,13 +686,87 @@ export default {
       font-size: 24px;
       line-height: 36px;
     }
-    &::after {
-      content: "";
-      position: absolute;
+  }
+  @media screen and (min-width: 850px) and (max-width: 1600px) {
+    &__row_grid {
+      grid-template-columns: 1fr 5fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    &__title h4 {
+      font-size: 16px;
+    }
+    &__field label p {
+      font-size: 14px;
+    }
+    &__subtitle {
+      font-size: 14px;
+    }
+    &__image_big {
+      margin-right: 8px;
+    }
+    &__info {
+      &:last-child {
+        max-width: 474px;
+      }
+    }
+    &__name {
+      font-size: 16px;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 850px) {
+    &__row_grid {
+      grid-template-columns: 1fr 3fr;
+    }
+  }
+  @media screen and (min-width: 500px) and (max-width: 744px) {
+    &__row_grid {
+      grid-template: repeat(2, 1fr) / 1fr 3fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 500px) {
+    &__row_grid {
+      grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__block_direction, &__row_direction {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      row-gap: 10px;
+    }
+    &__field {
       width: 100%;
-      height: 1px;
-      bottom: 0;
-      border-bottom: 1px dashed #353132;
+      label {
+        margin-bottom: 4px;
+      }
+    }
+    &__roles {
+      flex-wrap: wrap;
+      row-gap: 5px;
+      li p {
+        font-size: 10px;
+      }
+    }
+    &__row {
+      gap: 5px;
+    }
+    &__row_grid &__image {
+      grid-row: 1;
+    }
+    &__row_grid &__require:nth-child(3) {
+      grid-column: 1 / 3;
+    }
+    &__image_big {
+      margin-right: 0;
+    }
+    .main-submit {
+      flex-direction: column;
+      row-gap: 10px;
+      button {
+        margin-right: 0 !important;
+      }
     }
   }
 }

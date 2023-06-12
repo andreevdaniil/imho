@@ -7,7 +7,7 @@
     is-range
   >
     <template v-slot="{ inputValue, inputEvents }">
-      <div class="period">
+      <div class="period main-color">
         <div class="period__text">
           <p>с</p>
         </div>
@@ -41,8 +41,8 @@ export default {
   data() {
     return {
       range: {
-        start: '',
-        end: ''
+        start: "",
+        end: "",
       },
       masks: {
         input: "DD.MM.YYYY",
@@ -54,17 +54,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getRange: "Main/getRange"
-    })
+      getRange: "Main/getRange",
+    }),
   },
   watch: {
     getRange(newValue) {
-      this.range = newValue
+      this.range = newValue;
     },
     range(newValue) {
-      this.$store.commit("Main/changeRangeForPeriod", newValue)
-    }
-  }
+      this.$store.commit("Main/changeRangeForPeriod", newValue);
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -91,6 +91,18 @@ export default {
     margin-right: 4px;
     font-size: 14px;
     font-weight: 400;
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__text,
+    &__input {
+      font-size: 10px;
+    }
+    &__item {
+      display: flex;
+      align-items: center;
+      max-width: 63px;
+      padding: 2px 4px;
+    }
   }
 }
 </style>

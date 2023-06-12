@@ -1,7 +1,9 @@
 <template>
   <div class="moder-publications-calendar">
     <div class="moder-publications-calendar__content">
-      <div class="moder-publications-calendar__top moder-publications-calendar__row">
+      <div
+        class="moder-publications-calendar__top moder-publications-calendar__row"
+      >
         <div
           class="moder-publications-calendar__column"
           v-for="day in week"
@@ -10,15 +12,19 @@
           <p>{{ day }}</p>
         </div>
       </div>
-      <div class="moder-publications-calendar__body moder-publications-calendar__row">
+      <div
+        class="moder-publications-calendar__body moder-publications-calendar__row"
+      >
         <div
-          class="moder-publications-calendar__column moder-publications-calendar__item main-content"
+          class="moder-publications-calendar__column moder-publications-calendar__item main-content main-color"
           v-for="(item, index) in week"
           :key="item"
         >
           <div class="moder-publications-calendar__info">
             <p class="moder-publications-calendar__subtitle">26</p>
-            <p class="moder-publications-calendar__subtitle_light">10 публикаций</p>
+            <p class="moder-publications-calendar__subtitle_light">
+              10 публикаций
+            </p>
           </div>
           <ul class="moder-publications-calendar__list">
             <li
@@ -42,12 +48,14 @@
               <p class="moder-publications-calendar__article">
                 {{ article.title }}
               </p>
-              <p class="moder-publications-calendar__author">Александр Гопоненко</p>
-              <div
-                class="publications-modal"
-                v-if="currentArticle && currentArticle.id == article.id"
-              >
-                <div class="publications-modal__content">
+              <p class="moder-publications-calendar__author">
+                Александр Гопоненко
+              </p>
+              <div class="publications-modal">
+                <div
+                  class="publications-modal__content"
+                  v-if="currentArticle && currentArticle.id == article.id"
+                >
                   <div class="publications-modal__row">
                     <div class="publications-modal__parameter">
                       <p>Id</p>
@@ -258,15 +266,44 @@ export default {
     return {
       week: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
       currentArticle: null,
+      right: false,
+      changed: false,
     };
   },
   mounted() {
     document.addEventListener("click", (element) => {
+      [].forEach.call(
+        document.querySelectorAll(".publications-modal"),
+        function (el) {
+          el.classList.remove("publications-modal_left");
+          el.classList.remove("publications-modal_right");
+          el.classList.remove("publications-modal_top");
+        }
+      );
       if (
-        element.target.closest(".publications-modal") == null &&
         element.target.closest(".moder-publications-calendar__article") == null
       ) {
         this.currentArticle = null;
+      } else {
+        let child = element.target.parentNode.querySelector(
+          ".publications-modal"
+        );
+        let parent = this.Container;
+        // Удаляем у всех модалок классы "_right" и "_left"
+        if (this.Container.width >= 632) {
+          // Проверяем, выходит ли модалка за пределы контейнера
+          if (parent.right <= child.getBoundingClientRect().right) {
+            child.classList.add("publications-modal_left");
+          } else {
+            child.classList.add("publications-modal_right");
+          }
+          if (parent.left > child.getBoundingClientRect().left) {
+            child.classList.remove("publications-modal_left");
+            child.classList.add("publications-modal_right");
+          }
+        } else {
+          child.classList.add("publications-modal_top");
+        }
       }
     });
   },
@@ -274,6 +311,7 @@ export default {
     ...mapGetters({
       getAuthor: "Main/getAuthorById",
       UserById: "Users/getUserById",
+      Container: "Main/getSizeOfContainer",
     }),
   },
   methods: {
@@ -357,23 +395,82 @@ export default {
   font-weight: 400;
   line-height: 15px;
 }
+.moder-publications-calendar {
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    width: 1100px;
+    min-height: 400px;
+    &__subtitle,
+    &__article {
+      font-size: 10px;
+    }
+  }
+}
 .publications-modal {
   position: absolute;
   top: -50px;
-  right: -200%;
+  // left: 100%;
   padding: 8px;
   width: 400px;
   z-index: 999;
   background: #fff;
   border: 2px solid #b90c0c;
   border-radius: 8px;
+  &_right {
+    left: 100%;
+    .publications-modal__content {
+      &::after,
+      &::before {
+        right: 102.1%;
+      }
+      &::after {
+        border-right-color: #fff;
+      }
+      &::before {
+        border-right-color: #b90c0c;
+      }
+    }
+  }
+  &_left {
+    right: 100%;
+    .publications-modal__content {
+      &::after,
+      &::before {
+        left: 102.1%;
+      }
+      &::after {
+        border-left-color: #fff;
+      }
+      &::before {
+        border-left-color: #b90c0c;
+      }
+    }
+  }
+  &_top {
+    top: 100%;
+    .publications-modal__content {
+      &::after,
+      &::before {
+        top: -40px;
+        left: 30px;
+      }
+      &::after {
+        border-bottom-color: #fff;
+        border-width: 31px;
+        margin-top: -29px;
+      }
+      &::before {
+        border-bottom-color: #b90c0c;
+        border-width: 31px;
+        margin-top: -31px;
+      }
+    }
+  }
   &__content {
     position: relative;
     padding: 4px;
     width: 100%;
     &:after,
     &:before {
-      right: 102.1%;
       top: 60px;
       border: solid transparent;
       content: "";
@@ -385,13 +482,11 @@ export default {
 
     &:after {
       border-color: rgba(136, 183, 213, 0);
-      border-right-color: #fff;
       border-width: 30px;
       margin-top: -30px;
     }
     &:before {
       border-color: rgba(194, 225, 245, 0);
-      border-right-color: #b90c0c;
       border-width: 32px;
       margin-top: -32px;
     }
@@ -435,6 +530,12 @@ export default {
     img {
       margin-right: 5px;
     }
+  }
+  @media screen and (min-device-width: 1280px) and (max-device-width: 1599px) {
+    right: -320%;
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    width: 350px;
   }
 }
 .main-table-author {

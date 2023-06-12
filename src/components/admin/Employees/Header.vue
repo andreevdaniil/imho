@@ -18,7 +18,7 @@
         class="main-filter__button"
         :class="{
           'main-filter__button_active':
-            $route.name == 'AdminEmployeesCreateEmployeer'
+            $route.name == 'AdminEmployeesCreateEmployeer',
         }"
         :to="{ name: 'AdminEmployeesCreateEmployeer' }"
       >
@@ -43,6 +43,23 @@
     font-size: 32px;
     font-weight: 700;
     color: #353132;
+  }
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    &__title {
+      font-size: 16px !important;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__top {
+      flex-direction: column;
+      justify-content: start !important;
+      align-items: start !important;
+    }
+    &__filter {
+      margin-top: 10px;
+      align-self: center;
+      column-gap: 10px;
+    }
   }
 }
 </style>

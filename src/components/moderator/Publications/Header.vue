@@ -2,21 +2,22 @@
   <div class="moder-publications-top">
     <div class="moder-publications-top__content">
       <div class="moder-publications-top__block">
-        <div class="main-filter">
-          <select
-            v-if="$route.name == 'ModeratorPublicationsTableNew'"
-            name="color"
-            class="moder-publications-top__button"
-            v-model="textForPeriod"
-          >
-            <option value="publish">Опубликовано</option>
-            <option value="created">Создано</option>
-          </select>
+        <div class="main-filter main-color">
+          <div class="main-period__button">
+            <select name="color" v-model="textForPeriod">
+              <option value="publish">Опубликовано</option>
+              <option value="created">Создано</option>
+            </select>
+          </div>
 
           <div class="main-filter__block">
             <Period />
           </div>
         </div>
+      </div>
+      <div
+        class="moder-publications-top__block moder-publications-top__block_scroll"
+      >
         <div class="main-filter">
           <div class="main-filter__block">
             <router-link
@@ -149,6 +150,7 @@ import Period from "@/components/main/Period.vue";
 import PenIcon from "@/assets/images/icons/pen.svg?inline";
 import RefreshIcon from "@/assets/images/icons/refresh.svg?inline";
 import DotsIcon from "@/assets/images/icons/dots.svg?inline";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -162,6 +164,25 @@ export default {
     RefreshIcon,
     DotsIcon,
   },
+  mounted() {
+    let scroll = document.querySelector(
+      ".moder-publications-top__block_scroll"
+    );
+    let child = document.querySelector(
+      ".moder-publications-top__block .main-filter .main-filter__button_active"
+    );
+    if (child.getBoundingClientRect().right > this.Container.right) {
+      scroll.scrollBy(
+        child.getBoundingClientRect().right - this.Container.right,
+        0
+      );
+    }
+  },
+  computed: {
+    ...mapGetters({
+      Container: "Main/getSizeOfContainer",
+    }),
+  },
   watch: {
     textForPeriod(newValue) {
       this.$store.commit("Main/changeTextForPeriod", newValue);
@@ -174,26 +195,17 @@ export default {
   margin-bottom: 20px;
   &__content {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
   }
   &__block {
     display: flex;
     align-items: center;
     .main-filter {
       margin-right: 40px;
-      &:first-child .main-filter__block {
-        margin-right: 4px;
-      }
     }
-  }
-  &__button {
-    display: flex;
-    align-items: center;
-    padding: 2px 8px;
-    border: 1px solid #c0c0c0;
-    border-radius: 8px;
-     margin-right: 5px;
-    cursor: pointer;
+    &:last-child {
+      margin-left: auto;
+    }
   }
   &__icon {
     path {
@@ -209,7 +221,102 @@ export default {
       align-items: center;
     }
     button:not(:last-child) {
-      margin-right: 14px;
+      margin-right: 10px;
+    }
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1600px) {
+    &__block {
+      .main-filter {
+        column-gap: 8px;
+        margin-right: 6px;
+      }
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      row-gap: 16px;
+    }
+    &__block {
+      align-items: start;
+      &:first-child {
+        grid-row: 1;
+        grid-column: 1;
+      }
+      &:nth-child(2) {
+        grid-column: 1 / 3;
+        .main-filter {
+          margin-right: 0;
+        }
+      }
+      &:last-child {
+        grid-row: 1;
+        grid-column: 2;
+      }
+    }
+  }
+  @media screen and (min-width: 500px) and (max-width: 1280px) {
+    &__block {
+      &:nth-child(2) {
+        justify-content: center;
+      }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__content {
+      display: grid;
+      grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    }
+    &__filter {
+      svg {
+        width: 13px;
+        height: 13px;
+      }
+      button:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+    &__block:first-child {
+      .main-filter {
+        margin-right: 0;
+      }
+    }
+    &__block {
+      &:nth-child(2) {
+        grid-row: 2;
+        grid-column: 1 / 3;
+        .main-filter {
+          margin-top: 8px;
+          min-width: 488px;
+          margin-right: 0;
+          &__button {
+            &::after {
+              height: 18px;
+              right: -10px;
+            }
+          }
+        }
+      }
+    }
+    &__button {
+      padding: 2px 4px;
+      max-width: 56px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      select {
+        max-width: 50px;
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
     }
   }
 }

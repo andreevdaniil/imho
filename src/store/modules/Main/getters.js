@@ -32,4 +32,10 @@ export default {
     getTextForPeriod(state) {
         return state.textForPeriod
     },
+    getSizeOfContainer(state) {
+        return state.mainContainer
+    },
+    getCurrentMode() {
+        return JSON.parse(localStorage.getItem('mode'))
+    }
 }

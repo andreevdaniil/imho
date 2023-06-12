@@ -1,6 +1,6 @@
 <template>
   <div class="main-paginator">
-    <div class="main-paginator__content main-table__column">
+    <div class="main-paginator__content main-color main-table__column">
       <div class="main-paginator__column">
         <ul class="main-paginator__count">
           <li
@@ -11,7 +11,7 @@
             <p
               class="main-paginator__number"
               :class="{
-                'main-paginator__number_active':  currentCount == count
+                'main-paginator__number_active': currentCount == count,
               }"
             >
               {{ count }}
@@ -76,12 +76,12 @@ export default {
   },
   data() {
     return {
-      currentPage: 1, 
+      currentPage: 1,
       paginatedItems: [],
       itemsPerPage: 50,
       firstPage: 1,
       lastPage: 5,
-      currentCount: 50
+      currentCount: 50,
     };
   },
   components: {
@@ -122,7 +122,7 @@ export default {
       this.currentPage = page;
       this.sendData(this.items);
     },
-    sendData(data = this.items) {  
+    sendData(data = this.items) {
       let result = [];
       if (this.itemsPerPage == "Все") {
         this.itemsPerPage = data.length;
@@ -137,7 +137,7 @@ export default {
     },
     changeItemsForViews(count) {
       this.itemsPerPage = count;
-      this.currentCount = count
+      this.currentCount = count;
       this.sendData();
     },
     switchPage(arrow) {
@@ -171,12 +171,12 @@ export default {
     items(newValue) {
       this.sendData(newValue);
     },
-    pages(newValue){
+    pages(newValue) {
       if (newValue == 1) {
-        this.currentPage = 1
+        this.currentPage = 1;
         this.sendData();
       }
-    }
+    },
   },
 };
 </script>

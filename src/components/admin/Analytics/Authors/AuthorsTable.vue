@@ -1,7 +1,7 @@
 <template>
   <div class="analytics-authors-table">
     <div class="analytics-authors-table__top">
-      <div class="analytics-authors-table__row">
+      <div class="analytics-authors-table__row main-table_white">
         <div
           class="analytics-authors-table__parameter analytics-authors-table__column main-table__column"
           @click="filteredItems.sort(sort_by('id', parseInt))"
@@ -288,8 +288,10 @@ export default {
   &__parameter {
     cursor: pointer;
     user-select: none;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
     p {
-      margin-right: 10px;
       text-transform: uppercase;
       font-size: 16px;
       font-weight: 700;
@@ -300,14 +302,33 @@ export default {
     height: 16px;
     display: flex;
     align-items: center;
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
   }
   &__value {
     color: #231f20;
     font-weight: 500;
     font-size: 14px;
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1600px) {
+    &__parameter {
+      column-gap: 8px;
+      font-size: 14px;
+    }
+    &__row {
+      grid-template-columns: 2fr 4fr 6fr 5fr 5fr 4fr 2fr 4fr 2fr;
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1600px) {
+    &__parameter {
+      column-gap: 8px;
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 1280px) {
+    &__row {
+      grid-template-columns: 2fr 3fr 6fr 4fr 4fr 3fr 2fr 3fr 2fr;
+    }
   }
 }
 </style>

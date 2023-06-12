@@ -1,52 +1,14 @@
 <template>
   <div class="moderator-user-kpi">
-    <div class="moderator-user__title">
+    <div class="moderator-user-kpi__title">
       <h4>ЛК модератора</h4>
     </div>
     <Header />
-    <div class="moderator-user-kpi__content main-content">
+    <div class="moderator-user-kpi__content main-color main-content">
       <div class="moderator-user-kpi__row">
-        <h5 class="moderator-user-kpi__title">
+        <h5 class="moderator-user-kpi__name">
           KPI {{ currentUser.surname }} {{ currentUser.name }}
         </h5>
-        <div class="main-filter" v-if="$route.query.period == 'month'">
-          <div class="main-filter__block">
-            <button class="main-filter__button">Январь</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Февраль</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Март</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Апрель</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Май</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Июнь</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Июль</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Август</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Сентябрь</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Октябрь</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Ноябрь</button>
-          </div>
-          <div class="main-filter__block">
-            <button class="main-filter__button">Декабрь</button>
-          </div>
-        </div>
       </div>
       <div class="moderator-user-kpi__row">
         <div class="moderator-user-kpi__column">
@@ -74,16 +36,26 @@
             <h5>Продуктивность за неделю</h5>
           </div>
           <ul class="moderator-user-kpi__list">
-            <li class="moderator-user-kpi__li">
+            <li class="moderator-user-kpi__status">
               <p>Одобрено</p>
             </li>
-            <li class="moderator-user-kpi__li">
+            <li class="moderator-user-kpi__status">
               <p>Отклонено</p>
             </li>
           </ul>
           <div class="moderator-user-kpi__graph">
             <line-chart
+              class="moderator-user-kpi__line"
               :styles="{ height: '300px' }"
+              :style="[
+                Container.width < 1068 && $route.query.period == 'month'
+                  ? { width: '1728px' }
+                  : Container.width <= 850 && $route.query.period == 'year'
+                  ? { width: '768px' }
+                  : Container.width <= 632 && $route.query.period == 'week'
+                  ? { width: '600px' }
+                  : false,
+              ]"
             ></line-chart>
           </div>
         </div>
@@ -97,6 +69,24 @@ import LineChart from "@/components/moderator/Kpi/Graph.vue";
 
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      months: [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+      ],
+    };
+  },
   components: {
     Header,
     LineChart,
@@ -104,6 +94,7 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: "Users/getCurrentUser",
+      Container: "Main/getSizeOfContainer",
     }),
   },
 };
@@ -136,10 +127,15 @@ export default {
       align-items: start;
     }
   }
-  &__title {
+  &__name {
     font-size: 24px;
     font-weight: 700;
+  }
+  &__title {
+    font-size: 32px;
+    font-weight: 700;
     color: #353132;
+    margin-bottom: 16px;
   }
   &__subtitle {
     margin-bottom: 16px;
@@ -184,11 +180,51 @@ export default {
       }
     }
   }
-}
-.moderator-user__title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #353132;
-  margin-bottom: 16px;
+  @media screen and (min-width: 320px) and (max-width: 1600px) {
+    &__row {
+      &_direction {
+        flex-direction: column;
+        align-items: start;
+      }
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__title {
+      font-size: 24px;
+    }
+    &__name,
+    &__subtitle {
+      font-size: 16px;
+    }
+    &__parameter,
+    &__value,
+    &__status {
+      font-size: 14px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 850px) {
+    &__months {
+      width: 100%;
+    }
+    &__months .main-filter {
+      width: 795px;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__name {
+      font-size: 14px;
+    }
+    &__parameter,
+    &__value,
+    &__status {
+      font-size: 12px;
+    }
+    &__column {
+      padding: 4px;
+    }
+    &__title {
+      font-size: 16px;
+    }
+  }
 }
 </style>

@@ -31,7 +31,7 @@
         class="publications-approved-table__row"
         v-for="item in paginatedItems"
         :key="item.id"
-        :to="{ name: 'ModeratorPublicationsArticle', params: { id: item.id } }"
+        :to="{ name: 'PublicationsArticle', params: { id: item.id } }"
       >
         <div class="publications-approved-table__value main-table__column">
           <p>{{ item.id.toLocaleString() }}</p>
@@ -118,7 +118,7 @@
           </ul>
         </div>
         <div class="publications-approved-table__value main-table__column">
-          <div class="publications-approved-table__moder">
+          <div class="publications-approved-table__moderator">
             <img src="@/assets/images/users/avatar1.png" alt="" />
             <p>
               {{ UserById(item.moderId) ? UserById(item.moderId).name : {} }}
@@ -161,17 +161,15 @@ export default {
     ...mapGetters({
       getAuthor: "Main/getAuthorById",
       getRange: "Main/getRange",
-      CurrentUser: "Users/getCurrentUser",
       UserById: "Users/getUserById",
+      availableCountries: "Main/getAvailableCountries",
     }),
     filteredPublications() {
       return this.publications.filter(
         (item) =>
           item.status == "approved" &&
-          new Date(item["publish"]).getTime() >= this.getRange.start &&
-          new Date(item["publish"]).getTime() <= this.getRange.end &&
-          item.availableCountries.some((e) =>
-            this.CurrentUser.availableCountries.includes(e)
+          item.availableCountries.some((element) =>
+            this.availableCountries.includes(element)
           )
       );
     },
@@ -237,12 +235,41 @@ export default {
   &__type {
     margin-right: 0px;
   }
-  &__moder {
+  &__moderator {
     display: flex;
     align-items: center;
     p {
       margin-left: 4px;
       text-align: left;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1599px) {
+    &__row {
+      grid-template-columns: 2fr 8fr 3fr 5fr 5fr 2fr 3fr;
+    }
+    &__moderator {
+      p {
+        font-size: 10px;
+      }
+    }
+  }
+  @media screen and (min-width: 744px) and (max-width: 1280px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 2fr 6fr 5fr 2fr 3fr;
+    }
+  }
+  @media screen and (min-width: 320px) and (max-width: 744px) {
+    &__row {
+      grid-template-columns: 1fr 7fr 2fr 7fr 6fr 2fr 3fr;
+    }
+    &__moderator {
+      img {
+        height: 24px;
+        width: 24px;
+      }
+      p {
+        font-size: 8px !important;
+      }
     }
   }
 }
