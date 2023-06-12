@@ -21,12 +21,12 @@ export default {
     Header,
     Footer,
   },
-  beforeUpdate() {
-    this.changeSizeOfContainer();
-  },
   mounted() {
-    window.addEventListener("resize", () => {
+    this.$nextTick(() => {
       this.changeSizeOfContainer();
+      window.addEventListener("resize", () => {
+        this.changeSizeOfContainer();
+      });
     });
   },
   methods: {

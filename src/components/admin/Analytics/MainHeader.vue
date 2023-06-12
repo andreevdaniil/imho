@@ -168,11 +168,13 @@ export default {
     let child = document.querySelector(
       ".admin-analytics__nav .main-filter__button_active"
     );
-    if (child.getBoundingClientRect().right > this.Container.right) {
-      scroll.scrollBy(
-        child.getBoundingClientRect().right - this.Container.right,
-        0
-      );
+    if (child && scroll) {
+      if (child.getBoundingClientRect().right > this.Container.right) {
+        scroll.scrollBy(
+          child.getBoundingClientRect().right - this.Container.right,
+          0
+        );
+      }
     }
   },
   computed: {

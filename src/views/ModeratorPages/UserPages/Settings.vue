@@ -68,10 +68,10 @@
               <input type="password" id="moderatorUserSettingsPassword" />
             </div>
             <div class="moderator-user-settings__field">
-              <label for="moderatorUserSettingsPassword"
+              <label for="moderatorUserSettingsPasswordRepeat"
                 >Подтвердите пароль:</label
               >
-              <input type="password" id="moderatorUserSettingsPassword" />
+              <input type="password" id="moderatorUserSettingsPasswordRepeat" />
             </div>
           </div>
         </div>
