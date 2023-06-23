@@ -1,5 +1,6 @@
 <template>
   <header class="header">
+    {{ $t('message') }}
     <div class="header-top">
       <div class="container">
         <div class="header-top__content">

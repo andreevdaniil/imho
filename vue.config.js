@@ -21,4 +21,15 @@ module.exports = {
                 name: 'assets/[name].[hash:8].[ext]',
             });
     },
+
+    pluginOptions: {
+      i18n: {
+        locale: 'ru',
+        fallbackLocale: 'ru',
+        localeDir: 'locales',
+        enableInSFC: false,
+        includeLocales: false,
+        enableBridge: true
+      }
+    }
 };
